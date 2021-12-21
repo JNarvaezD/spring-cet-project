@@ -1,7 +1,11 @@
 package com.cet.dtos;
+import com.cet.Models.Cet;
+import lombok.Data;
+
 import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
+@Data
 public class InfoCetDto {
 
     private Long id;
@@ -24,12 +28,15 @@ public class InfoCetDto {
     @NotEmpty
     private String nombre1;
 
+    private String nombre2;
 
     @NotEmpty
     private String apellido1;
 
+    private String apellido2;
+
     @NotEmpty
-    private Date fecha_nacimiento;
+    private Date fechaNacimiento;
 
     @NotEmpty
     private String sexo;
@@ -41,7 +48,7 @@ public class InfoCetDto {
     private String codEps;
 
     @NotEmpty
-    private Boolean producto_financiero;
+    private Boolean productoFinanciero;
 
     @NotEmpty
     private Integer entidadFinancieraId;
@@ -55,7 +62,6 @@ public class InfoCetDto {
     @NotEmpty
     private String celular;
 
-    @NotEmpty
     private Date fechaExpedicion;
 
     @NotEmpty
@@ -80,27 +86,27 @@ public class InfoCetDto {
     private String identificacionAfConfirmado;
 
     @NotEmpty
-    private Boolean cumple_aislamiento;
+    private Boolean cumpleAislamiento;
 
     @NotEmpty
-    private Boolean autoriza_eps;
+    private Boolean autorizaEps;
 
     @NotEmpty
-    private Integer covid_contacto;
+    private Integer covidContacto;
 
     @NotEmpty
-    private Integer parentesco_id;
+    private Integer parentescoId;
 
     @NotEmpty
-    private Boolean comparten_gastos;
+    private Boolean compartenGastos;
 
     @NotEmpty
-    private Boolean fue_confirmado;
+    private Boolean fueConfirmado;
 
     @NotEmpty
     private Boolean noEfectividad;
 
     @NotEmpty
-    private Integer cet_id;
+    private Cet cet;
 
 }
