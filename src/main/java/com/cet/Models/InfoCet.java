@@ -42,7 +42,7 @@ public class InfoCet {
     private String apellido2;
 
     @Column(nullable = false)
-    private Date fecha_nacimiento;
+    private Date fechaNacimiento;
 
     @Column(nullable = false)
     private String sexo;
@@ -54,7 +54,7 @@ public class InfoCet {
     private String codEps;
 
     @Column(columnDefinition = "TINYINT(1)")
-    private Boolean producto_financiero;
+    private Boolean productoFinanciero;
 
     private Integer entidadFinancieraId;
 
@@ -75,28 +75,28 @@ public class InfoCet {
 
     private String codigoMunicipio;
 
-    private Long idBduaAfConfirmado;
+    private String idBduaAfConfirmado;
 
     private String tipoidAfConfirmado;
 
     private String identificacionAfConfirmado;
 
     @Column(columnDefinition = "TINYINT(1)")
-    private Boolean cumple_aislamiento;
+    private Boolean cumpleAislamiento;
 
     @Column(columnDefinition = "TINYINT(1)")
-    private Boolean autoriza_eps;
+    private Boolean autorizaEps;
 
     @Column(nullable = false)
-    private Integer covid_contacto;
+    private Integer covidContacto;
 
-    private Integer parentesco_id;
-
-    @Column(columnDefinition = "TINYINT(1)")
-    private Boolean comparten_gastos;
+    private Integer parentescoId;
 
     @Column(columnDefinition = "TINYINT(1)")
-    private Boolean fue_confirmado;
+    private Boolean compartenGastos;
+
+    @Column(columnDefinition = "TINYINT(1)")
+    private Boolean fueConfirmado;
 
     @Column(columnDefinition = "TINYINT(1)")
     private Boolean noEfectividad;

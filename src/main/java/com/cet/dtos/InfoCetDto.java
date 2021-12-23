@@ -77,7 +77,7 @@ public class InfoCetDto {
     private String codigoMunicipio;
 
     @NotEmpty
-    private Long idBduaAfConfirmado;
+    private String idBduaAfConfirmado;
 
     @NotEmpty
     private String tipoidAfConfirmado;
