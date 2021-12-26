@@ -2,10 +2,10 @@ package com.cet.utils;
 
 public class InfoCetUtils {
 
-    private static int covidContacto;
-    private static boolean fueConfirmado;
+    private static Integer covidContacto;
+    private static Boolean fueConfirmado;
 
-    public static void setCovidContactoAndFueConfirmado(int covidContactoPersona, boolean fueConfirmadoPersona) {
+    public static void setCovidContactoAndFueConfirmado(Integer covidContactoPersona, Boolean fueConfirmadoPersona) {
         covidContacto = covidContactoPersona;
         fueConfirmado = fueConfirmadoPersona;
 
@@ -24,6 +24,11 @@ public class InfoCetUtils {
 
     public static boolean getFueConfirmado() {
         return fueConfirmado;
+    }
+
+    public static void restartAttributes() {
+        covidContacto = null;
+        fueConfirmado = null;
     }
 
 }

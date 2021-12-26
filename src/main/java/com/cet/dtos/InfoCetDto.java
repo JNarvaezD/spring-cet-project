@@ -109,4 +109,6 @@ public class InfoCetDto {
     @NotEmpty
     private Cet cet;
 
+    private Boolean updatingInfoCet;
+
 }

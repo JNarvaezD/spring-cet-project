@@ -39,4 +39,9 @@ public class InfoCetRepositoryI implements InfoCetRepository{
         this.infoCetCrudRepository.deleteById(id);
     }
 
+    @Override
+    public Optional<InfoCet> findByIdentificacionAndCetId(String identificacion, Long cetId) {
+        return this.infoCetCrudRepository.findByIdentificacionAndCetId(identificacion, cetId);
+    }
+
 }
