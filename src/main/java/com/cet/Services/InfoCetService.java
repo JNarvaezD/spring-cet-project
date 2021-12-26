@@ -1,7 +1,9 @@
 package com.cet.Services;
 
+import com.cet.Models.FailedInfoCet;
 import com.cet.Models.InfoCet;
 import com.cet.Repositories.InfoCetRepositoryI;
+import com.cet.dtos.FailedInfoCetDto;
 import com.cet.dtos.InfoCetDto;
 import com.cet.utils.InfoCetUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +20,14 @@ public class InfoCetService {
     @Autowired
     private InfoCetRepositoryI infoCetRepositoryI;
 
+    @Autowired
+    private FailedInfoCetService infoCetService;
+
     public List<InfoCet> findAll() {
         return this.infoCetRepositoryI.findAll();
     }
 
-    public InfoCet isCreateOrUpdate(InfoCetDto infoCetDto) {
+    public InfoCet isCreateOrUpdate(Long idConfirmado, InfoCetDto infoCetDto) {
         if(infoCetDto.getUpdatingInfoCet()){
             Optional<InfoCet> infoCet = this.infoCetRepositoryI
                     .findByIdentificacionAndCetId(infoCetDto.getIdentificacion(), infoCetDto.getCet().getId());
@@ -30,7 +35,7 @@ public class InfoCetService {
                 InfoCetUtils.setCovidContactoAndFueConfirmado(infoCetDto.getCovidContacto(), infoCetDto.getFueConfirmado());
                 infoCet.get().setCovidContacto(InfoCetUtils.getCovidContacto());
                 infoCet.get().setFueConfirmado(InfoCetUtils.getFueConfirmado());
-                this.update(infoCetDto);
+                this.update(idConfirmado, infoCetDto);
                 return this.infoCetRepositoryI.findByIdentificacionAndCetId(
                                 infoCetDto.getIdentificacion(),
                                 infoCetDto.getCet().getId()
@@ -88,7 +93,7 @@ public class InfoCetService {
         return this.infoCetRepositoryI.findOne(id);
     }
 
-    public void update(InfoCetDto infoCetDto) {
+    public InfoCet update(Long idConfirmado, InfoCetDto infoCetDto) {
         InfoCet infoCet = InfoCet.builder()
                 .id(infoCetDto.getId())
                 .numeroCaso(infoCetDto.getNumeroCaso())
@@ -121,11 +126,31 @@ public class InfoCetService {
                 .autorizaEps(infoCetDto.getAutorizaEps())
                 .parentescoId(infoCetDto.getParentescoId())
                 .compartenGastos(infoCetDto.getCompartenGastos())
-                .noEfectividad(infoCetDto.getNoEfectividad())
                 .cet(infoCetDto.getCet())
                 .build();
-        this.infoCetRepositoryI.update(infoCet);
-        InfoCetUtils.restartAttributes();
+
+        if(infoCetDto.getLocaliza()) {
+            infoCet.setNoEfectividad(infoCetDto.getNoEfectividad());
+
+            Optional<InfoCet> cabezaFamiliar = this.infoCetRepositoryI.findOne(idConfirmado);
+
+            if(cabezaFamiliar.isPresent() && cabezaFamiliar.get().getCovidContacto() == 1) {
+                infoCet.setTipoidAfConfirmado(cabezaFamiliar.get().getTipoidAfConfirmado());
+                infoCet.setIdentificacionAfConfirmado(cabezaFamiliar.get().getIdentificacionAfConfirmado());
+                infoCet.setIdBduaAfConfirmado(cabezaFamiliar.get().getIdBduaAfConfirmado());
+            }
+
+            this.infoCetRepositoryI.update(infoCet);
+            InfoCetUtils.restartAttributes();
+        } else {
+            FailedInfoCetDto failedInfoCet = FailedInfoCetDto.builder()
+                    .infoCet(infoCet)
+                    .descripcion(infoCetDto.getNoEfectividad())
+                    .build();
+            this.infoCetService.save(failedInfoCet);
+        }
+
+        return this.infoCetRepositoryI.findOne(idConfirmado).get();
     }
 
     public InfoCet vincularContacto(Long idContacto, Long idCOnfirmado) {

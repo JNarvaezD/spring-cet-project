@@ -98,8 +98,7 @@ public class InfoCet {
     @Column(columnDefinition = "TINYINT(1)")
     private Boolean fueConfirmado;
 
-    @Column(columnDefinition = "TINYINT(1)")
-    private Boolean noEfectividad;
+    private String noEfectividad;
 
     @ManyToOne
     @JoinColumn(name = "cet_id")

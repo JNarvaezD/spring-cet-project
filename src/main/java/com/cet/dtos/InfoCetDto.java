@@ -104,11 +104,14 @@ public class InfoCetDto {
     private Boolean fueConfirmado;
 
     @NotEmpty
-    private Boolean noEfectividad;
+    private String noEfectividad;
 
     @NotEmpty
     private Cet cet;
 
     private Boolean updatingInfoCet;
+
+    @NotEmpty
+    private Boolean localiza;
 
 }
