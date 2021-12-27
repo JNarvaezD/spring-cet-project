@@ -30,8 +30,8 @@ public class CetRepositoryI implements CetRepository{
     }
 
     @Override
-    public void update(Cet cet) {
-        this.cetCrudRepository.save(cet);
+    public Cet update(Cet cet) {
+        return this.cetCrudRepository.save(cet);
     }
 
     @Override

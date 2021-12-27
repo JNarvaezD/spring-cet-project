@@ -30,12 +30,16 @@ public class CetService {
         return this.cetRepository.save(cet);
     }
 
-    public void update(CetDto cetDto) {
-        Cet cet = Cet.builder().id(cetDto.getId())
-                .nombreArchivo(cetDto.getNombreArchivo())
-                .fechaProceso(cetDto.getFechaProceso())
-                .build();
-        this.cetRepository.update(cet);
+    public Cet update(CetDto cetDto) {
+        Optional<Cet> findCet = this.cetRepository.findOne(cetDto.getId());
+        if(findCet.isPresent()) {
+            Cet cet = Cet.builder().id(cetDto.getId())
+                    .nombreArchivo(cetDto.getNombreArchivo())
+                    .fechaProceso(cetDto.getFechaProceso())
+                    .build();
+            return this.cetRepository.update(cet);
+        }
+        return null;
     }
 
     public void delete(Long id) {

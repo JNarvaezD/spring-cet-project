@@ -1,6 +1,5 @@
 package com.cet.Services;
 
-import com.cet.Models.FailedInfoCet;
 import com.cet.Models.InfoCet;
 import com.cet.Repositories.InfoCetRepositoryI;
 import com.cet.dtos.FailedInfoCetDto;
@@ -184,6 +183,5 @@ public class InfoCetService {
             this.infoCetRepositoryI.delete(id);
         }
     }
-
 
 }
