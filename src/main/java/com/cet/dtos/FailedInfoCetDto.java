@@ -9,6 +9,8 @@ import javax.validation.constraints.NotEmpty;
 @Data @Builder
 public class FailedInfoCetDto {
 
+    private Long id;
+
     @NotEmpty
     private InfoCet infoCet;
 
