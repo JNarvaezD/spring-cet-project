@@ -1,6 +1,6 @@
 package com.cet.Repositories;
 
-import com.cet.CrudRepositories.InfoCetCrudRepository;
+import com.cet.Repositories.CrudRepositories.InfoCetCrudRepository;
 import com.cet.Models.InfoCet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

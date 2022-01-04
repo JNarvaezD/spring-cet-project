@@ -56,7 +56,6 @@ public class InfoCetDto {
     @NotEmpty
     private Boolean giroAFamiliar;
 
-    @NotEmpty
     private String telefonoFijo;
 
     @NotEmpty
@@ -76,13 +75,10 @@ public class InfoCetDto {
     @NotEmpty
     private String codigoMunicipio;
 
-    @NotEmpty
     private String idBduaAfConfirmado;
 
-    @NotEmpty
     private String tipoidAfConfirmado;
 
-    @NotEmpty
     private String identificacionAfConfirmado;
 
     @NotEmpty

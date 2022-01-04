@@ -2,6 +2,7 @@ package com.cet.Services;
 
 import com.cet.Models.Cet;
 import com.cet.Repositories.CetRepository;
+import com.cet.Repositories.CrudRepositories.CetCrudRepository;
 import com.cet.dtos.CetDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

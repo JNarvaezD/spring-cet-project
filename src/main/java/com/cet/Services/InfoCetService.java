@@ -41,10 +41,10 @@ public class InfoCetService {
                         ).get();
             }
         }
-        return this.save(infoCetDto);
+        return this.save(idConfirmado, infoCetDto);
     }
 
-    public InfoCet save(InfoCetDto infoCetDto) {
+    public InfoCet save(Long idConfirmado, InfoCetDto infoCetDto) {
 
         if(infoCetDto.getFechaExpedicion() == null) {
             infoCetDto.setFechaExpedicion(new Date(1900, Calendar.JANUARY, 1));
@@ -85,7 +85,9 @@ public class InfoCetService {
                 .cet(infoCetDto.getCet())
                 .build();
         InfoCetUtils.restartAttributes();
-        return this.infoCetRepositoryI.save(infoCet);
+        InfoCet newInfoCet = this.infoCetRepositoryI.save(infoCet);
+        this.vincularContacto(idConfirmado, newInfoCet.getId());
+        return newInfoCet;
     }
 
     public Optional<InfoCet> findOne(Long id) {
