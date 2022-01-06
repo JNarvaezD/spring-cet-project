@@ -9,7 +9,7 @@ public class InfoCetUtils {
         covidContacto = covidContactoPersona;
         fueConfirmado = fueConfirmadoPersona;
 
-        if (covidContacto == 1) {
+        if (covidContacto == 1 && !fueConfirmado) {
             covidContacto = 2;
             fueConfirmado = true;
         } else if (fueConfirmado) {

@@ -4,6 +4,8 @@ import com.cet.Models.Cet;
 import com.cet.Models.InfoCet;
 import com.cet.Repositories.InfoCetRepository;
 import com.cet.Services.InfoCetService;
+import com.cet.dtos.InfoCetDto;
+import com.cet.utils.InfoCetUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,10 +14,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class InfoCetServiceTest {
@@ -29,10 +32,11 @@ public class InfoCetServiceTest {
     private List<InfoCet> infoCetList = new ArrayList<>();
 
     private InfoCet infoCet;
+    private InfoCetDto infoCetDto;
 
     @BeforeEach
     void setUp() {
-        Cet cet =Cet.builder().id(1L).nombreArchivo("CET_2020-02-01").fechaProceso(new Date()).build();
+        Cet cet = Cet.builder().id(1L).nombreArchivo("CET_2020-02-01").fechaProceso(new Date()).build();
         infoCet = InfoCet.builder().id(1L)
                 .numeroCaso("1")
                 .fechaDiagnostico(new Date(1900, Calendar.JANUARY, 1))
@@ -45,29 +49,88 @@ public class InfoCetServiceTest {
                 .apellido2("Torres")
                 .fechaNacimiento(new Date(1999, Calendar.JANUARY, 1))
                 .sexo("M")
-                .fallecido(false)
                 .codEps("CC435")
-                .productoFinanciero(false)
-                .entidadFinancieraId(1)
-                .giroAFamiliar(false)
+                .telefonoFijo("6324567")
                 .celular("3102764356")
-                .email("example@mail.com")
-                .direccion("Calle example 43-23")
-                .codigoDepartamento("80")
-                .codigoMunicipio("345")
-                .cumpleAislamiento(true)
-                .autorizaEps(true)
-                .parentescoId(8)
-                .compartenGastos(true)
-                .fueConfirmado(false)
-                .noEfectividad(null)
+                .covidContacto(1)
                 .cet(cet)
+                .fueConfirmado(false)
                 .build();
+
+        infoCetDto = InfoCetDto.builder().id(infoCet.getId())
+                .numeroCaso(infoCet.getNumeroCaso())
+                .fechaDiagnostico(infoCet.getFechaDiagnostico())
+                .bduaAfiliadoId(infoCet.getBduaAfiliadoId())
+                .tipoId(infoCet.getTipoId())
+                .identificacion(infoCet.getIdentificacion())
+                .nombre1(infoCet.getNombre1()).nombre2(infoCet.getNombre2())
+                .apellido1(infoCet.getApellido1()).apellido2(infoCet.getApellido2())
+                .fechaNacimiento(infoCet.getFechaNacimiento())
+                .sexo(infoCet.getSexo())
+                .codEps(infoCet.getCodEps())
+                .telefonoFijo(infoCet.getTelefonoFijo())
+                .celular(infoCet.getCelular())
+                .covidContacto(infoCet.getCovidContacto())
+                .cet(infoCet.getCet())
+                .fueConfirmado(infoCet.getFueConfirmado())
+                .build();
+
+        infoCetList.add(infoCet);
     }
 
     @Test
     void shouldReturnAllInfoCets() {
+        when(infoCetRepository.findAll()).thenReturn(infoCetList);
+        List<InfoCet> infoCetListService = infoCetService.findAll();
+        verify(infoCetRepository, times(1)).findAll();
+        assertEquals(infoCetListService.size(), this.infoCetList.size());
+        assertEquals(infoCetListService, infoCetList);
+    }
 
+    @Test
+    void shouldUpdateRowAndLinkToHimself() {
+        InfoCetDto infoCetDtoToUpdate = infoCetDto;
+        infoCetDtoToUpdate.setProductoFinanciero(false);
+        infoCetDtoToUpdate.setEntidadFinancieraId(null);
+        infoCetDtoToUpdate.setGiroAFamiliar(true);
+        //infoCetDtoToUpdate.setFechaExpedicion(infoCetDto.getFechaExpedicion());
+        infoCetDtoToUpdate.setEmail("example@mail.com");
+        infoCetDtoToUpdate.setDireccion("Direccion example");
+        infoCetDtoToUpdate.setCodigoDepartamento("12");
+        infoCetDtoToUpdate.setCodigoMunicipio("345");
+        infoCetDtoToUpdate.setCumpleAislamiento(true);
+        infoCetDtoToUpdate.setAutorizaEps(false);
+        infoCetDtoToUpdate.setParentescoId(8);
+        infoCetDtoToUpdate.setCompartenGastos(true);
+        infoCetDtoToUpdate.setFallecido(false);
+        infoCetDtoToUpdate.setLocaliza(true);
+
+        InfoCet infoCetUpdatedExpected = infoCet;
+        infoCetUpdatedExpected.setProductoFinanciero(false);
+        infoCetUpdatedExpected.setEntidadFinancieraId(null);
+        infoCetUpdatedExpected.setGiroAFamiliar(true);
+        //infoCetUpdatedExpected.setFechaExpedicion(infoCetDto.getFechaExpedicion());
+        infoCetUpdatedExpected.setEmail("example@mail.com");
+        infoCetUpdatedExpected.setDireccion("Direccion example");
+        infoCetUpdatedExpected.setCodigoDepartamento("12");
+        infoCetUpdatedExpected.setCodigoMunicipio("345");
+        infoCetUpdatedExpected.setCumpleAislamiento(true);
+        infoCetUpdatedExpected.setAutorizaEps(false);
+        infoCetUpdatedExpected.setParentescoId(8);
+        infoCetUpdatedExpected.setCompartenGastos(true);
+        infoCetUpdatedExpected.setFallecido(false);
+
+        InfoCetUtils.setCovidContactoAndFueConfirmado(infoCetUpdatedExpected.getCovidContacto(), infoCetUpdatedExpected.getFueConfirmado());
+        infoCetUpdatedExpected.setFueConfirmado(InfoCetUtils.getFueConfirmado());
+        infoCetUpdatedExpected.setCovidContacto(InfoCetUtils.getCovidContacto());
+
+        when(infoCetRepository.findOne(anyLong())).thenReturn(Optional.of(infoCet));
+        InfoCet infoCetUpdated = infoCetService.update(infoCet.getId(), infoCetDto);
+        verify(infoCetRepository, times(2)).findOne(anyLong());
+        assertEquals(infoCet.getId(), infoCetDtoToUpdate.getId());
+        assertEquals(1, infoCetDtoToUpdate.getCovidContacto());
+        assertFalse(infoCetUpdatedExpected.getFueConfirmado());
+        assertEquals(1, infoCetUpdatedExpected.getCovidContacto());
     }
 
 }

@@ -1,6 +1,7 @@
 package com.cet.Services;
 
 import com.cet.Models.InfoCet;
+import com.cet.Repositories.InfoCetRepository;
 import com.cet.Repositories.InfoCetRepositoryI;
 import com.cet.dtos.FailedInfoCetDto;
 import com.cet.dtos.InfoCetDto;
@@ -17,32 +18,32 @@ import java.util.Optional;
 public class InfoCetService {
 
     @Autowired
-    private InfoCetRepositoryI infoCetRepositoryI;
+    private InfoCetRepository infoCetRepository;
 
     @Autowired
     private FailedInfoCetService infoCetService;
 
     public List<InfoCet> findAll() {
-        return this.infoCetRepositoryI.findAll();
+        return this.infoCetRepository.findAll();
     }
 
-    public InfoCet isCreateOrUpdate(Long idConfirmado, InfoCetDto infoCetDto) {
+    /*public InfoCet isCreateOrUpdate(Long idConfirmado, InfoCetDto infoCetDto) {
         if(infoCetDto.getUpdatingInfoCet()){
-            Optional<InfoCet> infoCet = this.infoCetRepositoryI
+            Optional<InfoCet> infoCet = this.infoCetRepository
                     .findByIdentificacionAndCetId(infoCetDto.getIdentificacion(), infoCetDto.getCet().getId());
             if (infoCet.isPresent()) {
                 InfoCetUtils.setCovidContactoAndFueConfirmado(infoCetDto.getCovidContacto(), infoCetDto.getFueConfirmado());
                 infoCet.get().setCovidContacto(InfoCetUtils.getCovidContacto());
                 infoCet.get().setFueConfirmado(InfoCetUtils.getFueConfirmado());
                 this.update(idConfirmado, infoCetDto);
-                return this.infoCetRepositoryI.findByIdentificacionAndCetId(
+                return this.infoCetRepository.findByIdentificacionAndCetId(
                                 infoCetDto.getIdentificacion(),
                                 infoCetDto.getCet().getId()
                         ).get();
             }
         }
         return this.save(idConfirmado, infoCetDto);
-    }
+    }*/
 
     public InfoCet save(Long idConfirmado, InfoCetDto infoCetDto) {
 
@@ -85,13 +86,13 @@ public class InfoCetService {
                 .cet(infoCetDto.getCet())
                 .build();
         InfoCetUtils.restartAttributes();
-        InfoCet newInfoCet = this.infoCetRepositoryI.save(infoCet);
+        InfoCet newInfoCet = this.infoCetRepository.save(infoCet);
         this.vincularContacto(idConfirmado, newInfoCet.getId());
         return newInfoCet;
     }
 
     public Optional<InfoCet> findOne(Long id) {
-        return this.infoCetRepositoryI.findOne(id);
+        return this.infoCetRepository.findOne(id);
     }
 
     public InfoCet update(Long idConfirmado, InfoCetDto infoCetDto) {
@@ -108,8 +109,8 @@ public class InfoCetService {
                 .apellido2(infoCetDto.getApellido2())
                 .fechaNacimiento(infoCetDto.getFechaNacimiento())
                 .sexo(infoCetDto.getSexo())
-                .fallecido(infoCetDto.getFallecido())
                 .codEps(infoCetDto.getCodEps())
+                .fallecido(infoCetDto.getFallecido())
                 .productoFinanciero(infoCetDto.getProductoFinanciero())
                 .entidadFinancieraId(infoCetDto.getEntidadFinancieraId())
                 .giroAFamiliar(infoCetDto.getGiroAFamiliar())
@@ -133,7 +134,7 @@ public class InfoCetService {
         if(infoCetDto.getLocaliza()) {
             infoCet.setNoEfectividad(infoCetDto.getNoEfectividad());
 
-            Optional<InfoCet> cabezaFamiliar = this.infoCetRepositoryI.findOne(idConfirmado);
+            Optional<InfoCet> cabezaFamiliar = this.infoCetRepository.findOne(idConfirmado);
 
             if(cabezaFamiliar.isPresent() && cabezaFamiliar.get().getCovidContacto() == 1) {
                 infoCet.setTipoidAfConfirmado(cabezaFamiliar.get().getTipoidAfConfirmado());
@@ -141,7 +142,7 @@ public class InfoCetService {
                 infoCet.setIdBduaAfConfirmado(cabezaFamiliar.get().getIdBduaAfConfirmado());
             }
 
-            this.infoCetRepositoryI.update(infoCet);
+            this.infoCetRepository.update(infoCet);
             InfoCetUtils.restartAttributes();
         } else {
             FailedInfoCetDto failedInfoCet = FailedInfoCetDto.builder()
@@ -151,12 +152,12 @@ public class InfoCetService {
             this.infoCetService.save(failedInfoCet);
         }
 
-        return this.infoCetRepositoryI.findOne(idConfirmado).get();
+        return this.infoCetRepository.findOne(idConfirmado).get();
     }
 
-    public InfoCet vincularContacto(Long idContacto, Long idCOnfirmado) {
-        Optional<InfoCet> confirmado = this.infoCetRepositoryI.findOne(idContacto);
-        Optional<InfoCet> contacto = this.infoCetRepositoryI.findOne(idCOnfirmado);
+    public InfoCet vincularContacto(Long idContacto, Long idConfirmado) {
+        Optional<InfoCet> confirmado = this.infoCetRepository.findOne(idContacto);
+        Optional<InfoCet> contacto = this.infoCetRepository.findOne(idConfirmado);
 
         if(confirmado.isPresent() && contacto.isPresent()) {
             InfoCetUtils.setCovidContactoAndFueConfirmado(contacto.get().getCovidContacto(), contacto.get().getFueConfirmado());
@@ -166,23 +167,23 @@ public class InfoCetService {
                 contacto.get().setIdBduaAfConfirmado(confirmado.get().getBduaAfiliadoId());
                 contacto.get().setTipoidAfConfirmado(confirmado.get().getTipoId());
                 contacto.get().setIdentificacionAfConfirmado(confirmado.get().getIdentificacion());
-                this.infoCetRepositoryI.save(contacto.get());
+                this.infoCetRepository.save(contacto.get());
             } else {
                 contacto.get().setCovidContacto(InfoCetUtils.getCovidContacto());
                 contacto.get().setFueConfirmado(InfoCetUtils.getFueConfirmado());
                 contacto.get().setIdBduaAfConfirmado(null);
                 contacto.get().setTipoidAfConfirmado(null);
                 contacto.get().setIdentificacionAfConfirmado(null);
-                this.infoCetRepositoryI.save(contacto.get());
+                this.infoCetRepository.save(contacto.get());
             }
         }
         return confirmado.get();
     }
 
     public void delete(Long id) {
-        Optional<InfoCet> infoCet = this.infoCetRepositoryI.findOne(id);
+        Optional<InfoCet> infoCet = this.infoCetRepository.findOne(id);
         if(infoCet.isPresent()) {
-            this.infoCetRepositoryI.delete(id);
+            this.infoCetRepository.delete(id);
         }
     }
 
