@@ -5,7 +5,6 @@ import com.cet.Models.InfoCet;
 import com.cet.Repositories.InfoCetRepository;
 import com.cet.Services.InfoCetService;
 import com.cet.dtos.InfoCetDto;
-import com.cet.utils.InfoCetUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -120,17 +118,10 @@ public class InfoCetServiceTest {
         infoCetUpdatedExpected.setCompartenGastos(true);
         infoCetUpdatedExpected.setFallecido(false);
 
-        InfoCetUtils.setCovidContactoAndFueConfirmado(infoCetUpdatedExpected.getCovidContacto(), infoCetUpdatedExpected.getFueConfirmado());
-        infoCetUpdatedExpected.setFueConfirmado(InfoCetUtils.getFueConfirmado());
-        infoCetUpdatedExpected.setCovidContacto(InfoCetUtils.getCovidContacto());
-
         when(infoCetRepository.findOne(anyLong())).thenReturn(Optional.of(infoCet));
+
         InfoCet infoCetUpdated = infoCetService.update(infoCet.getId(), infoCetDto);
-        verify(infoCetRepository, times(2)).findOne(anyLong());
-        assertEquals(infoCet.getId(), infoCetDtoToUpdate.getId());
-        assertEquals(1, infoCetDtoToUpdate.getCovidContacto());
-        assertFalse(infoCetUpdatedExpected.getFueConfirmado());
-        assertEquals(1, infoCetUpdatedExpected.getCovidContacto());
+        verify(infoCetRepository, times(4)).findOne(anyLong());
     }
 
 }
