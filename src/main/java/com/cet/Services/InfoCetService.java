@@ -1,6 +1,8 @@
 package com.cet.Services;
 
+import com.cet.Models.FailedInfoCet;
 import com.cet.Models.InfoCet;
+import com.cet.Repositories.FailedInfoCetRepository;
 import com.cet.Repositories.InfoCetRepository;
 import com.cet.dtos.FailedInfoCetDto;
 import com.cet.dtos.InfoCetDto;
@@ -18,14 +20,14 @@ public class InfoCetService {
     private InfoCetRepository infoCetRepository;
 
     @Autowired
-    private FailedInfoCetService infoCetService;
+    private FailedInfoCetRepository failedInfoCetRepository;
 
     public List<InfoCet> findAll() {
-        return this.infoCetRepository.findAll();
+        return infoCetRepository.findAll();
     }
 
     public Optional<InfoCet> findOne(Long id) {
-        return this.infoCetRepository.findOne(id);
+        return infoCetRepository.findOne(id);
     }
 
     public InfoCet update(Long idConfirmado, InfoCetDto infoCetDto) {
@@ -64,7 +66,7 @@ public class InfoCetService {
         if(infoCetDto.getLocaliza()) {
             infoCet.setNoEfectividad(infoCetDto.getNoEfectividad());
 
-            Optional<InfoCet> cabezaFamiliar = this.infoCetRepository.findOne(idConfirmado);
+            Optional<InfoCet> cabezaFamiliar = infoCetRepository.findOne(idConfirmado);
 
             if(cabezaFamiliar.isPresent() && cabezaFamiliar.get().getCovidContacto() == 1) {
                 infoCet.setTipoidAfConfirmado(cabezaFamiliar.get().getTipoidAfConfirmado());
@@ -72,22 +74,21 @@ public class InfoCetService {
                 infoCet.setIdBduaAfConfirmado(cabezaFamiliar.get().getIdBduaAfConfirmado());
             }
 
-            this.infoCetRepository.update(infoCet);
-            this.vincularContacto(idConfirmado, infoCetDto.getId());
+            return infoCetRepository.update(infoCet);
         } else {
-            FailedInfoCetDto failedInfoCet = FailedInfoCetDto.builder()
+            FailedInfoCet failedInfoCet = FailedInfoCet.builder()
                     .infoCet(infoCet)
                     .descripcion(infoCetDto.getNoEfectividad())
                     .build();
-            this.infoCetService.save(failedInfoCet);
+            failedInfoCetRepository.save(failedInfoCet);
         }
 
-        return this.infoCetRepository.findOne(idConfirmado).get();
+        return infoCetRepository.findOne(idConfirmado).get();
     }
 
     public InfoCet vincularContacto(Long idContacto, Long idConfirmado) {
-        Optional<InfoCet> confirmado = this.infoCetRepository.findOne(idContacto);
-        Optional<InfoCet> contacto = this.infoCetRepository.findOne(idConfirmado);
+        Optional<InfoCet> confirmado = infoCetRepository.findOne(idContacto);
+        Optional<InfoCet> contacto = infoCetRepository.findOne(idConfirmado);
 
         if(confirmado.isPresent() && contacto.isPresent()) {
             InfoCetUtils.setCovidContactoAndFueConfirmado(
@@ -103,23 +104,23 @@ public class InfoCetService {
                 contacto.get().setIdBduaAfConfirmado(confirmado.get().getBduaAfiliadoId());
                 contacto.get().setTipoidAfConfirmado(confirmado.get().getTipoId());
                 contacto.get().setIdentificacionAfConfirmado(confirmado.get().getIdentificacion());
-                this.infoCetRepository.save(contacto.get());
+                infoCetRepository.save(contacto.get());
             } else {
                 contacto.get().setCovidContacto(InfoCetUtils.getCovidContacto());
                 contacto.get().setFueConfirmado(InfoCetUtils.getFueConfirmado());
                 contacto.get().setIdBduaAfConfirmado(null);
                 contacto.get().setTipoidAfConfirmado(null);
                 contacto.get().setIdentificacionAfConfirmado(null);
-                this.infoCetRepository.save(contacto.get());
+                infoCetRepository.save(contacto.get());
             }
         }
         return confirmado.get();
     }
 
     public void delete(Long id) {
-        Optional<InfoCet> infoCet = this.infoCetRepository.findOne(id);
+        Optional<InfoCet> infoCet = infoCetRepository.findOne(id);
         if(infoCet.isPresent()) {
-            this.infoCetRepository.delete(id);
+            infoCetRepository.delete(id);
         }
     }
 

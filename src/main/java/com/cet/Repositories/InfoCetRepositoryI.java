@@ -21,27 +21,27 @@ public class InfoCetRepositoryI implements InfoCetRepository{
 
     @Override
     public InfoCet save(InfoCet infoCet) {
-        return this.infoCetCrudRepository.save(infoCet);
+        return infoCetCrudRepository.save(infoCet);
     }
 
     @Override
     public Optional<InfoCet> findOne(Long id) {
-        return this.infoCetCrudRepository.findById(id);
+        return infoCetCrudRepository.findById(id);
     }
 
     @Override
-    public void update(InfoCet infoCet) {
-        this.infoCetCrudRepository.save(infoCet);
+    public InfoCet update(InfoCet infoCet) {
+        return infoCetCrudRepository.save(infoCet);
     }
 
     @Override
     public void delete(Long id) {
-        this.infoCetCrudRepository.deleteById(id);
+        infoCetCrudRepository.deleteById(id);
     }
 
     @Override
     public Optional<InfoCet> findByIdentificacionAndCetId(String identificacion, Long cetId) {
-        return this.infoCetCrudRepository.findByIdentificacionAndCetId(identificacion, cetId);
+        return infoCetCrudRepository.findByIdentificacionAndCetId(identificacion, cetId);
     }
 
 }

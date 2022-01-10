@@ -15,12 +15,12 @@ public class FailedInfoCetRepositoryI implements FailedInfoCetRepository{
 
     @Override
     public List<FailedInfoCet> findAll() {
-        return this.failedCetCrudRepository.findAll();
+        return failedCetCrudRepository.findAll();
     }
 
     @Override
     public FailedInfoCet save(FailedInfoCet failedInfoCet) {
-        return this.failedCetCrudRepository.save(failedInfoCet);
+        return failedCetCrudRepository.save(failedInfoCet);
     }
 
 }

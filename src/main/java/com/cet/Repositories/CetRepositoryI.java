@@ -16,26 +16,26 @@ public class CetRepositoryI implements CetRepository{
 
     @Override
     public List<Cet> findAll() {
-        return this.cetCrudRepository.findAll();
+        return cetCrudRepository.findAll();
     }
 
     @Override
     public Optional<Cet> findOne(Long id) {
-        return this.cetCrudRepository.findById(id);
+        return cetCrudRepository.findById(id);
     }
 
     @Override
     public Cet save(Cet cet) {
-        return this.cetCrudRepository.save(cet);
+        return cetCrudRepository.save(cet);
     }
 
     @Override
     public Cet update(Cet cet) {
-        return this.cetCrudRepository.save(cet);
+        return cetCrudRepository.save(cet);
     }
 
     @Override
     public void deleteById(Long id) {
-        this.cetCrudRepository.deleteById(id);
+        cetCrudRepository.deleteById(id);
     }
 }

@@ -11,7 +11,8 @@ public interface InfoCetRepository {
     List<InfoCet> findAll();
     InfoCet save(InfoCet infoCet);
     Optional<InfoCet> findOne(Long id);
-    void update(InfoCet infoCet);
+    InfoCet update(InfoCet infoCet);
     void delete(Long id);
     Optional<InfoCet> findByIdentificacionAndCetId(String identificacion, Long cetId);
+
 }

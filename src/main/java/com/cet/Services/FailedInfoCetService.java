@@ -22,7 +22,7 @@ public class FailedInfoCetService {
         FailedInfoCet failedInfoCet = FailedInfoCet.builder().infoCet(failedInfoCetDto.getInfoCet())
                 .descripcion(failedInfoCetDto.getDescripcion())
                 .build();
-        return this.failedInfoCetRepository.save(failedInfoCet);
+        return failedInfoCetRepository.save(failedInfoCet);
     }
 
 }

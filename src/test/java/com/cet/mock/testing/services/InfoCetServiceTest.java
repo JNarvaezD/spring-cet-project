@@ -1,7 +1,9 @@
 package com.cet.mock.testing.services;
 
 import com.cet.Models.Cet;
+import com.cet.Models.FailedInfoCet;
 import com.cet.Models.InfoCet;
+import com.cet.Repositories.FailedInfoCetRepository;
 import com.cet.Repositories.InfoCetRepository;
 import com.cet.Services.InfoCetService;
 import com.cet.dtos.InfoCetDto;
@@ -24,18 +26,21 @@ public class InfoCetServiceTest {
     @Mock
     private InfoCetRepository infoCetRepository;
 
+    @Mock
+    private FailedInfoCetRepository failedInfoCetRepository;
+
     @InjectMocks @Autowired
     private InfoCetService infoCetService;
 
     private List<InfoCet> infoCetList = new ArrayList<>();
 
-    private InfoCet infoCet;
+    private InfoCet infoCetEntity;
     private InfoCetDto infoCetDto;
 
     @BeforeEach
     void setUp() {
         Cet cet = Cet.builder().id(1L).nombreArchivo("CET_2020-02-01").fechaProceso(new Date()).build();
-        infoCet = InfoCet.builder().id(1L)
+        infoCetEntity = InfoCet.builder().id(1L)
                 .numeroCaso("1")
                 .fechaDiagnostico(new Date(1900, Calendar.JANUARY, 1))
                 .bduaAfiliadoId("ABC234567")
@@ -55,25 +60,38 @@ public class InfoCetServiceTest {
                 .fueConfirmado(false)
                 .build();
 
-        infoCetDto = InfoCetDto.builder().id(infoCet.getId())
-                .numeroCaso(infoCet.getNumeroCaso())
-                .fechaDiagnostico(infoCet.getFechaDiagnostico())
-                .bduaAfiliadoId(infoCet.getBduaAfiliadoId())
-                .tipoId(infoCet.getTipoId())
-                .identificacion(infoCet.getIdentificacion())
-                .nombre1(infoCet.getNombre1()).nombre2(infoCet.getNombre2())
-                .apellido1(infoCet.getApellido1()).apellido2(infoCet.getApellido2())
-                .fechaNacimiento(infoCet.getFechaNacimiento())
-                .sexo(infoCet.getSexo())
-                .codEps(infoCet.getCodEps())
-                .telefonoFijo(infoCet.getTelefonoFijo())
-                .celular(infoCet.getCelular())
-                .covidContacto(infoCet.getCovidContacto())
-                .cet(infoCet.getCet())
-                .fueConfirmado(infoCet.getFueConfirmado())
+        infoCetDto = InfoCetDto.builder().id(infoCetEntity.getId())
+                .numeroCaso(infoCetEntity.getNumeroCaso())
+                .fechaDiagnostico(infoCetEntity.getFechaDiagnostico())
+                .bduaAfiliadoId(infoCetEntity.getBduaAfiliadoId())
+                .tipoId(infoCetEntity.getTipoId())
+                .identificacion(infoCetEntity.getIdentificacion())
+                .nombre1(infoCetEntity.getNombre1()).nombre2(infoCetEntity.getNombre2())
+                .apellido1(infoCetEntity.getApellido1()).apellido2(infoCetEntity.getApellido2())
+                .fechaNacimiento(infoCetEntity.getFechaNacimiento())
+                .sexo(infoCetEntity.getSexo())
+                .codEps(infoCetEntity.getCodEps())
+                .telefonoFijo(infoCetEntity.getTelefonoFijo())
+                .celular(infoCetEntity.getCelular())
+                .covidContacto(infoCetEntity.getCovidContacto())
+                .cet(infoCetEntity.getCet())
+                .fueConfirmado(infoCetEntity.getFueConfirmado())
+                .productoFinanciero(false)
+                .entidadFinancieraId(null)
+                .giroAFamiliar(true)
+                .email("example@mail.com")
+                .direccion("Direccion example")
+                .codigoDepartamento("12")
+                .codigoMunicipio("345")
+                .cumpleAislamiento(true)
+                .autorizaEps(false)
+                .parentescoId(8)
+                .compartenGastos(true)
+                .fallecido(false)
+                .localiza(true)
                 .build();
 
-        infoCetList.add(infoCet);
+        infoCetList.add(infoCetEntity);
     }
 
     @Test
@@ -87,41 +105,63 @@ public class InfoCetServiceTest {
 
     @Test
     void shouldUpdateRowAndLinkToHimself() {
-        InfoCetDto infoCetDtoToUpdate = infoCetDto;
-        infoCetDtoToUpdate.setProductoFinanciero(false);
-        infoCetDtoToUpdate.setEntidadFinancieraId(null);
-        infoCetDtoToUpdate.setGiroAFamiliar(true);
-        //infoCetDtoToUpdate.setFechaExpedicion(infoCetDto.getFechaExpedicion());
-        infoCetDtoToUpdate.setEmail("example@mail.com");
-        infoCetDtoToUpdate.setDireccion("Direccion example");
-        infoCetDtoToUpdate.setCodigoDepartamento("12");
-        infoCetDtoToUpdate.setCodigoMunicipio("345");
-        infoCetDtoToUpdate.setCumpleAislamiento(true);
-        infoCetDtoToUpdate.setAutorizaEps(false);
-        infoCetDtoToUpdate.setParentescoId(8);
-        infoCetDtoToUpdate.setCompartenGastos(true);
-        infoCetDtoToUpdate.setFallecido(false);
-        infoCetDtoToUpdate.setLocaliza(true);
+        InfoCet infoCetPayload = infoCetEntity;
+        infoCetPayload.setProductoFinanciero(false);
+        infoCetPayload.setEntidadFinancieraId(null);
+        infoCetPayload.setGiroAFamiliar(true);
+        infoCetPayload.setEmail("example@mail.com");
+        infoCetPayload.setDireccion("Direccion example");
+        infoCetPayload.setCodigoDepartamento("12");
+        infoCetPayload.setCodigoMunicipio("345");
+        infoCetPayload.setCumpleAislamiento(true);
+        infoCetPayload.setAutorizaEps(false);
+        infoCetPayload.setParentescoId(8);
+        infoCetPayload.setCompartenGastos(true);
+        infoCetPayload.setFallecido(false);
 
-        InfoCet infoCetUpdatedExpected = infoCet;
-        infoCetUpdatedExpected.setProductoFinanciero(false);
-        infoCetUpdatedExpected.setEntidadFinancieraId(null);
-        infoCetUpdatedExpected.setGiroAFamiliar(true);
-        //infoCetUpdatedExpected.setFechaExpedicion(infoCetDto.getFechaExpedicion());
-        infoCetUpdatedExpected.setEmail("example@mail.com");
-        infoCetUpdatedExpected.setDireccion("Direccion example");
-        infoCetUpdatedExpected.setCodigoDepartamento("12");
-        infoCetUpdatedExpected.setCodigoMunicipio("345");
-        infoCetUpdatedExpected.setCumpleAislamiento(true);
-        infoCetUpdatedExpected.setAutorizaEps(false);
-        infoCetUpdatedExpected.setParentescoId(8);
-        infoCetUpdatedExpected.setCompartenGastos(true);
-        infoCetUpdatedExpected.setFallecido(false);
+        when(infoCetRepository.findOne(anyLong())).thenReturn(Optional.of(infoCetEntity));
 
-        when(infoCetRepository.findOne(anyLong())).thenReturn(Optional.of(infoCet));
+        InfoCet infoCetUpdated = infoCetPayload;
+        infoCetUpdated.setTipoidAfConfirmado(infoCetEntity.getTipoId());
+        infoCetUpdated.setIdentificacionAfConfirmado(infoCetEntity.getIdentificacion());
+        infoCetUpdated.setIdBduaAfConfirmado(infoCetEntity.getBduaAfiliadoId());
 
-        InfoCet infoCetUpdated = infoCetService.update(infoCet.getId(), infoCetDto);
-        verify(infoCetRepository, times(4)).findOne(anyLong());
+        when(infoCetRepository.update(any())).thenReturn(infoCetUpdated);
+        InfoCet responseService = infoCetService.update(infoCetPayload.getId(), infoCetDto);
+
+        verify(infoCetRepository, times(1)).findOne(anyLong());
+        verify(infoCetRepository, times(1)).update(any());
+        verify(failedInfoCetRepository, times(0)).save(any());
+
+        assertEquals(infoCetEntity.getBduaAfiliadoId(),responseService.getIdBduaAfConfirmado());
+        assertEquals(infoCetEntity.getTipoId(),responseService.getTipoidAfConfirmado());
+        assertEquals(infoCetEntity.getIdentificacion(),responseService.getIdentificacionAfConfirmado());
+    }
+
+    @Test
+    void shouldNotCreateInfoCetBecauseNoLocaliza() {
+        InfoCetDto infoCetDtoPayload = infoCetDto;
+        infoCetDtoPayload.setLocaliza(false);
+        infoCetDtoPayload.setNoEfectividad("No contesta el telefono");
+
+        InfoCet infoCetResponseExpected = infoCetEntity;
+        infoCetResponseExpected.setNoEfectividad(infoCetDtoPayload.getNoEfectividad());
+
+        FailedInfoCet failedInfoCet = FailedInfoCet.builder()
+                .infoCet(infoCetEntity)
+                .descripcion(infoCetDto.getNoEfectividad())
+                .build();
+
+        when(infoCetRepository.findOne(anyLong())).thenReturn(Optional.of(infoCetResponseExpected));
+        when(failedInfoCetRepository.save(any())).thenReturn(failedInfoCet);
+
+        InfoCet responseService = infoCetService.update(infoCetDtoPayload.getId(), infoCetDtoPayload);
+
+        verify(infoCetRepository, times(1)).findOne(anyLong());
+        verify(infoCetRepository, times(0)).update(any());
+        verify(failedInfoCetRepository, times(1)).save(any());
+
+        assertEquals(responseService.getNoEfectividad(), infoCetDtoPayload.getNoEfectividad());
     }
 
 }
