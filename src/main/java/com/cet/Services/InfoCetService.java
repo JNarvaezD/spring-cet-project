@@ -117,11 +117,13 @@ public class InfoCetService {
         return confirmado.get();
     }
 
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         Optional<InfoCet> infoCet = infoCetRepository.findOne(id);
         if(infoCet.isPresent()) {
             infoCetRepository.delete(id);
+            return true;
         }
+        return false;
     }
 
 }
