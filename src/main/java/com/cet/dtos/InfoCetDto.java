@@ -36,7 +36,7 @@ public class InfoCetDto {
 
     private String apellido2;
 
-    @NotEmpty
+    //@NotEmpty
     private Date fechaNacimiento;
 
     @NotEmpty

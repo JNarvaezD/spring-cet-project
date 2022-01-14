@@ -4,6 +4,7 @@ import com.cet.Controllers.InfoCetController;
 import com.cet.Models.Cet;
 import com.cet.Models.InfoCet;
 import com.cet.Services.InfoCetService;
+import com.cet.dtos.InfoCetDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,10 +38,11 @@ public class InfoCetControllerTest {
     private ObjectMapper objectMapper;
 
     List<InfoCet> infoCetList = new ArrayList<>();
+    private Cet cet;
 
     @BeforeEach
     void setUp() {
-        Cet cet = Cet.builder().id(1L).nombreArchivo("CET_2020-02-01").fechaProceso(new Date()).build();
+        cet = Cet.builder().id(1L).nombreArchivo("CET_2020-02-01").fechaProceso(new Date()).build();
         InfoCet infoCet = InfoCet.builder().id(1L)
                 .numeroCaso("1")
                 .fechaDiagnostico(new Date(1900, Calendar.JANUARY, 1))
@@ -60,6 +62,7 @@ public class InfoCetControllerTest {
                 .cet(cet)
                 .fueConfirmado(false)
                 .build();
+
         infoCetList.add(infoCet);
     }
 
@@ -70,8 +73,81 @@ public class InfoCetControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
-        System.out.println("esta es la longitud" + responseMVC.getResponse().getContentAsString());
         verify(infoCetService, times(1)).findAll();
+        assertEquals(responseMVC.getResponse().getStatus(), 200);
+    }
+
+    @Test
+    void shouldReturnCreatedInfoCet() throws Exception {
+        InfoCet infoCetToReturn = InfoCet.builder().id(2L)
+                .numeroCaso("2")
+                .fechaDiagnostico(new Date(1900, Calendar.JANUARY, 1))
+                .bduaAfiliadoId("DCSA234567")
+                .tipoId("CC")
+                .identificacion("99876543")
+                .nombre1("Bryan")
+                .apellido1("Doe")
+                .fechaNacimiento(new Date(1999, Calendar.JANUARY, 1))
+                .sexo("M")
+                .codEps("CC435")
+                .telefonoFijo("3434556")
+                .celular("4357890976")
+                .covidContacto(1)
+                .cet(cet)
+                .fueConfirmado(false)
+                .productoFinanciero(false)
+                .entidadFinancieraId(null)
+                .giroAFamiliar(true)
+                .email("example@mail.com")
+                .direccion("Direccion example")
+                .codigoDepartamento("12")
+                .codigoMunicipio("345")
+                .cumpleAislamiento(true)
+                .autorizaEps(false)
+                .parentescoId(8)
+                .compartenGastos(true)
+                .fallecido(false)
+                .build();
+
+        InfoCetDto infoCetDto = InfoCetDto.builder().id(infoCetToReturn.getId())
+                .numeroCaso(infoCetToReturn.getNumeroCaso())
+                .fechaDiagnostico(infoCetToReturn.getFechaDiagnostico())
+                .bduaAfiliadoId(infoCetToReturn.getBduaAfiliadoId())
+                .tipoId(infoCetToReturn.getTipoId())
+                .identificacion(infoCetToReturn.getIdentificacion())
+                .nombre1(infoCetToReturn.getNombre1()).nombre2(infoCetToReturn.getNombre2())
+                .apellido1(infoCetToReturn.getApellido1()).apellido2(infoCetToReturn.getApellido2())
+                .fechaNacimiento(infoCetToReturn.getFechaNacimiento())
+                .sexo(infoCetToReturn.getSexo())
+                .codEps(infoCetToReturn.getCodEps())
+                .telefonoFijo(infoCetToReturn.getTelefonoFijo())
+                .celular(infoCetToReturn.getCelular())
+                .covidContacto(infoCetToReturn.getCovidContacto())
+                .cet(infoCetToReturn.getCet())
+                .fueConfirmado(infoCetToReturn.getFueConfirmado())
+                .productoFinanciero(infoCetToReturn.getProductoFinanciero())
+                .entidadFinancieraId(null)
+                .giroAFamiliar(infoCetToReturn.getGiroAFamiliar())
+                .email(infoCetToReturn.getEmail())
+                .direccion(infoCetToReturn.getDireccion())
+                .codigoDepartamento(infoCetToReturn.getCodigoDepartamento())
+                .codigoMunicipio(infoCetToReturn.getCodigoMunicipio())
+                .cumpleAislamiento(infoCetToReturn.getCumpleAislamiento())
+                .autorizaEps(infoCetToReturn.getAutorizaEps())
+                .parentescoId(infoCetToReturn.getParentescoId())
+                .compartenGastos(infoCetToReturn.getCompartenGastos())
+                .fallecido(infoCetToReturn.getFallecido())
+                .localiza(true)
+                .build();
+
+        when(infoCetService.update(infoCetDto.getId(), infoCetDto)).thenReturn(infoCetToReturn);
+        MvcResult responseMVC = mockMvc.perform(put("/info-cets")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(infoCetDto)))
+                .andExpect(status().isOk())
+                .andReturn();
+        verify(infoCetService, times(1)).update(infoCetDto.getId(), infoCetDto);
+        assertEquals(responseMVC.getResponse().getStatus(), 200);
     }
 
 }
