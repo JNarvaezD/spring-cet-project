@@ -3,7 +3,8 @@ import com.cet.Models.Cet;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data @Builder
@@ -11,69 +12,68 @@ public class InfoCetDto {
 
     private Long id;
 
-    @NotEmpty
+    @NotBlank
     private String numeroCaso;
 
-    @NotEmpty
+    @NotNull
     private Date fechaDiagnostico;
 
-    @NotEmpty
+    @NotBlank
     private String bduaAfiliadoId;
 
-    @NotEmpty
+    @NotBlank
     private String tipoId;
 
-    @NotEmpty
+    @NotBlank
     private String identificacion;
 
-    @NotEmpty
+    @NotBlank
     private String nombre1;
 
     private String nombre2;
 
-    @NotEmpty
+    @NotBlank
     private String apellido1;
 
     private String apellido2;
 
-    //@NotEmpty
+    @NotNull
     private Date fechaNacimiento;
 
-    @NotEmpty
+    @NotBlank
     private String sexo;
 
-    @NotEmpty
+    @NotNull
     private Boolean fallecido;
 
-    @NotEmpty
+    @NotBlank
     private String codEps;
 
-    @NotEmpty
+    @NotNull
     private Boolean productoFinanciero;
 
-    @NotEmpty
     private Integer entidadFinancieraId;
 
-    @NotEmpty
+    @NotNull
     private Boolean giroAFamiliar;
 
     private String telefonoFijo;
 
-    @NotEmpty
+    @NotBlank
     private String celular;
 
     private Date fechaExpedicion;
 
-    @NotEmpty
+    @NotBlank
     private String email;
 
-    @NotEmpty
+    @NotBlank
     private String direccion;
 
-    @NotEmpty
+    @NotBlank
     private String codigoDepartamento;
 
-    @NotEmpty
+    @NotBlank
     private String codigoMunicipio;
 
     private String idBduaAfConfirmado;
@@ -82,33 +82,32 @@ public class InfoCetDto {
 
     private String identificacionAfConfirmado;
 
-    @NotEmpty
+    @NotNull
     private Boolean cumpleAislamiento;
 
-    @NotEmpty
+    @NotNull
     private Boolean autorizaEps;
 
-    @NotEmpty
+    @NotNull
     private Integer covidContacto;
 
-    @NotEmpty
+    @NotNull
     private Integer parentescoId;
 
-    @NotEmpty
+    @NotNull
     private Boolean compartenGastos;
 
-    @NotEmpty
+    @NotNull
     private Boolean fueConfirmado;
 
-    @NotEmpty
     private String noEfectividad;
 
-    @NotEmpty
+    @NotNull
     private Cet cet;
 
     private Boolean updatingInfoCet;
 
-    @NotEmpty
+    @NotNull
     private Boolean localiza;
 
 }

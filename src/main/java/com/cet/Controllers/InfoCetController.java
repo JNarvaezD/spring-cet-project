@@ -24,7 +24,7 @@ public class InfoCetController {
 
     @PutMapping
     public ResponseEntity<InfoCet> update(@RequestBody @Valid InfoCetDto request) {
-        return new ResponseEntity<>(infoCetService.update(request.getId(), request), HttpStatus.CREATED);
+        return new ResponseEntity<>(infoCetService.update(request.getId(), request), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
