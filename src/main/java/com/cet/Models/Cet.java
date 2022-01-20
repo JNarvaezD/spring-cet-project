@@ -6,20 +6,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity @NoArgsConstructor @Data @Builder @AllArgsConstructor
 public class Cet {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "nombre_archivo")
     private String nombreArchivo;
 
     @Column(name = "fecha_proceso")
-    private Date fechaProceso;
+    private LocalDate fechaProceso;
 
     @OneToMany(mappedBy = "cet")
     private List<InfoCet> infoCets;

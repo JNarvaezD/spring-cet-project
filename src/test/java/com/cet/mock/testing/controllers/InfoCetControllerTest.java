@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,10 +44,10 @@ public class InfoCetControllerTest {
 
     @BeforeEach
     void setUp() {
-        cet = Cet.builder().id(1L).nombreArchivo("CET_2020-02-01").fechaProceso(new Date()).build();
+        cet = Cet.builder().id(1L).nombreArchivo("CET_2020-02-01").fechaProceso(LocalDate.now()).build();
         InfoCet infoCet = InfoCet.builder().id(1L)
                 .numeroCaso("1")
-                .fechaDiagnostico(new Date(1900, Calendar.JANUARY, 1))
+                .fechaDiagnostico(LocalDate.now())
                 .bduaAfiliadoId("ABC234567")
                 .tipoId("CC")
                 .identificacion("123456789")
@@ -54,7 +55,7 @@ public class InfoCetControllerTest {
                 .nombre2("Alberto")
                 .apellido1("Rojas")
                 .apellido2("Torres")
-                .fechaNacimiento(new Date(1999, Calendar.JANUARY, 1))
+                .fechaNacimiento(LocalDate.now())
                 .sexo("M")
                 .codEps("CC435")
                 .telefonoFijo("6324567")
@@ -82,13 +83,13 @@ public class InfoCetControllerTest {
     void shouldReturnCreatedInfoCet() throws Exception {
         InfoCet infoCetToReturn = InfoCet.builder().id(2L)
                 .numeroCaso("2")
-                .fechaDiagnostico(new Date(1900, Calendar.JANUARY, 1))
+                .fechaDiagnostico(LocalDate.now())
                 .bduaAfiliadoId("DCSA234567")
                 .tipoId("CC")
                 .identificacion("99876543")
                 .nombre1("Bryan")
                 .apellido1("Doe")
-                .fechaNacimiento(new Date(1999, Calendar.JANUARY, 1))
+                .fechaNacimiento(LocalDate.now())
                 .sexo("M")
                 .codEps("CC435")
                 .telefonoFijo("3434556")

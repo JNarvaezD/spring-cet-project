@@ -44,4 +44,9 @@ public class InfoCetRepositoryI implements InfoCetRepository{
         return infoCetCrudRepository.findByIdentificacionAndCetId(identificacion, cetId);
     }
 
+    @Override
+    public void saveAll(List<InfoCet> infoCets) {
+        this.infoCetCrudRepository.saveAll(infoCets);
+    }
+
 }

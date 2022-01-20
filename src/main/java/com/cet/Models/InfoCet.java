@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class InfoCet {
     private String numeroCaso;
 
     @Column(nullable = false)
-    private Date fechaDiagnostico;
+    private LocalDate fechaDiagnostico;
 
     @Column(nullable = false)
     private String bduaAfiliadoId;
@@ -42,7 +43,7 @@ public class InfoCet {
     private String apellido2;
 
     @Column(nullable = false)
-    private Date fechaNacimiento;
+    private LocalDate fechaNacimiento;
 
     @Column(nullable = false)
     private String sexo;

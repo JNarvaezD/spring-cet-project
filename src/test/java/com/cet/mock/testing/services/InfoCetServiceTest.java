@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,10 +40,10 @@ public class InfoCetServiceTest {
 
     @BeforeEach
     void setUp() {
-        Cet cet = Cet.builder().id(1L).nombreArchivo("CET_2020-02-01").fechaProceso(new Date()).build();
+        Cet cet = Cet.builder().id(1L).nombreArchivo("CET_2020-02-01").fechaProceso(LocalDate.now()).build();
         infoCetEntity = InfoCet.builder().id(1L)
                 .numeroCaso("1")
-                .fechaDiagnostico(new Date(1900, Calendar.JANUARY, 1))
+                .fechaDiagnostico(LocalDate.now())
                 .bduaAfiliadoId("ABC234567")
                 .tipoId("CC")
                 .identificacion("123456789")
@@ -50,7 +51,7 @@ public class InfoCetServiceTest {
                 .nombre2("Alberto")
                 .apellido1("Rojas")
                 .apellido2("Torres")
-                .fechaNacimiento(new Date(1999, Calendar.JANUARY, 1))
+                .fechaNacimiento(LocalDate.now())
                 .sexo("M")
                 .codEps("CC435")
                 .telefonoFijo("6324567")

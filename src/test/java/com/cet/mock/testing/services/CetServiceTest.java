@@ -13,8 +13,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,8 +34,8 @@ public class CetServiceTest {
 
     @BeforeEach
     void setUp() {
-        Cet cet =Cet.builder().id(1L).nombreArchivo("CET_2020-02-01").fechaProceso(new Date()).build();
-        Cet cet2 =Cet.builder().id(2L).nombreArchivo("CET_2020-02-02").fechaProceso(new Date()).build();
+        Cet cet =Cet.builder().id(1L).nombreArchivo("CET_2020-02-01").fechaProceso(LocalDate.now()).build();
+        Cet cet2 =Cet.builder().id(2L).nombreArchivo("CET_2020-02-02").fechaProceso(LocalDate.now()).build();
         cets.add(cet);
         cets.add(cet2);
     }
@@ -61,7 +61,7 @@ public class CetServiceTest {
     @Test
     void shouldReturnCreatedCet() {
         CetDto cetDto = CetDto.builder().id(3L).nombreArchivo("CET_2020-12-26")
-                .fechaProceso(new Date()).build();
+                .fechaProceso(LocalDate.now()).build();
         Cet cet = Cet.builder().id(3L).nombreArchivo(cetDto.getNombreArchivo())
                 .fechaProceso(cetDto.getFechaProceso()).build();
 
@@ -76,7 +76,7 @@ public class CetServiceTest {
     @Test
     void shouldUpdateCet() {
         CetDto cetDto = CetDto.builder().id(2L).nombreArchivo("CET_2020-02-02_updated")
-                .fechaProceso(new Date()).build();
+                .fechaProceso(LocalDate.now()).build();
 
         Cet cetUpdated = this.cets.get(1);
         cetUpdated.setNombreArchivo(cetDto.getNombreArchivo());

@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data @Builder @AllArgsConstructor
 public class CetDto {
@@ -15,6 +15,6 @@ public class CetDto {
     @NotEmpty
     private String nombreArchivo;
     @NotEmpty
-    private Date fechaProceso;
+    private LocalDate fechaProceso;
 
 }
