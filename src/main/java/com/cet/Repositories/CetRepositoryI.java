@@ -38,4 +38,9 @@ public class CetRepositoryI implements CetRepository{
     public void deleteById(Long id) {
         cetCrudRepository.deleteById(id);
     }
+
+    @Override
+    public boolean findByNombreArchivo(String name) {
+        return cetCrudRepository.existsByNombreArchivo(name);
+    }
 }

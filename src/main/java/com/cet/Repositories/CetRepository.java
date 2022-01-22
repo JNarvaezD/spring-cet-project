@@ -12,5 +12,6 @@ public interface CetRepository {
     Cet save(Cet cet);
     Cet update(Cet cet);
     void deleteById(Long id);
+    boolean findByNombreArchivo(String name);
 
 }

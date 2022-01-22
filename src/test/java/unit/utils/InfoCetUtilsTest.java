@@ -1,4 +1,4 @@
-package com.cet.unit.utils;
+package unit.utils;
 
 import com.cet.utils.InfoCetUtils;
 import org.junit.jupiter.api.Test;

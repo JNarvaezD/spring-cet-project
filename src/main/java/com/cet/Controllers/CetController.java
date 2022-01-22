@@ -35,17 +35,28 @@ public class CetController {
 
     @PostMapping()
     public ResponseEntity<String> uploadData(@RequestParam("file") MultipartFile file) throws IOException {
-        List<InfoCet> infoCetList = new ArrayList<>();
+        try {
+            if(cetService.findByNombreArchivo(file.getOriginalFilename())) {
+                return new ResponseEntity<>(
+                        "The file " + file.getOriginalFilename() + " has been already uploaded",
+                        HttpStatus.UNPROCESSABLE_ENTITY
+                );
+            }
 
-        System.out.println("El archivo " + file.getOriginalFilename());
-        InputStream inputStream = file.getInputStream();
-        CsvParserSettings settings = new CsvParserSettings();
-        settings.setHeaderExtractionEnabled(true);
-        CsvParser parser = new CsvParser(settings);
+            List<InfoCet> infoCetList = new ArrayList<>();
 
-        List<Record> parseAllRecords = parser.parseAllRecords(inputStream);
+            InputStream inputStream = file.getInputStream();
+            CsvParserSettings settings = new CsvParserSettings();
+            settings.setHeaderExtractionEnabled(true);
+            settings.setDelimiterDetectionEnabled(true, '|', ',');
+            CsvParser parser = new CsvParser(settings);
 
-        if (parseAllRecords.size() > 0) {
+            List<Record> parseAllRecords = parser.parseAllRecords(inputStream);
+
+            if (parseAllRecords.size() == 0) {
+                return new ResponseEntity<>("No content was found in the file", HttpStatus.NO_CONTENT);
+            }
+
             CetDto cetDto = CetDto.builder().nombreArchivo(file.getOriginalFilename())
                     .fechaProceso(LocalDate.now())
                     .build();
@@ -76,9 +87,11 @@ public class CetController {
                 infoCetList.add(infoCet);
             });
             infoCetRepository.saveAll(infoCetList);
-        }
 
-        return new ResponseEntity<>("Upload successfully", HttpStatus.CREATED);
+            return new ResponseEntity<>("Upload successfully", HttpStatus.CREATED);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
 }
