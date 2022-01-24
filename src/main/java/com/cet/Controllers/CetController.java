@@ -33,7 +33,7 @@ public class CetController {
     @Autowired
     private InfoCetRepository infoCetRepository;
 
-    @PostMapping()
+    @PostMapping("/upload-data")
     public ResponseEntity<String> uploadData(@RequestParam("file") MultipartFile file) throws IOException {
         try {
             if(cetService.findByNombreArchivo(file.getOriginalFilename())) {
