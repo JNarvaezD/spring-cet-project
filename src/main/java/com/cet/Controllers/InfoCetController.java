@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController @RequestMapping("/info-cets")
 public class InfoCetController {
@@ -20,6 +21,15 @@ public class InfoCetController {
     @GetMapping
     public ResponseEntity<List<InfoCet>> get() {
         return new ResponseEntity<>(infoCetService.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> find(@PathVariable("id") Long id) {
+        Optional<InfoCet> infoCet = infoCetService.findOne(id);
+        if(infoCet.isPresent()) {
+            return new ResponseEntity<>(infoCet.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>("El registro con id " + id + " no ha sido encontrado", HttpStatus.NOT_FOUND);
     }
 
     @PutMapping
@@ -33,7 +43,7 @@ public class InfoCetController {
         if(rowDeleted) {
             return new ResponseEntity<>("Registro eliminado con exito", HttpStatus.OK);
         }
-        return new ResponseEntity<>("E registro con id " + id + " no ha sido encontrado", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("El registro con id " + id + " no ha sido encontrado", HttpStatus.NOT_FOUND);
     }
 
 }

@@ -4,7 +4,6 @@ import com.cet.Models.FailedInfoCet;
 import com.cet.Models.InfoCet;
 import com.cet.Repositories.FailedInfoCetRepository;
 import com.cet.Repositories.InfoCetRepository;
-import com.cet.dtos.FailedInfoCetDto;
 import com.cet.dtos.InfoCetDto;
 import com.cet.utils.InfoCetUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +59,7 @@ public class InfoCetService {
                 .autorizaEps(infoCetDto.getAutorizaEps())
                 .parentescoId(infoCetDto.getParentescoId())
                 .compartenGastos(infoCetDto.getCompartenGastos())
-                .cet(infoCetDto.getCet())
+                .cetId(infoCetDto.getCet())
                 .build();
 
         if(infoCetDto.getLocaliza()) {

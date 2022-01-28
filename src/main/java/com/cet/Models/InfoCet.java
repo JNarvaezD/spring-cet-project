@@ -101,11 +101,8 @@ public class InfoCet {
 
     private String noEfectividad;
 
-    @ManyToOne
-    @JoinColumn(name = "cet_id")
-    private Cet cet;
+    private Long cetId;
 
     @OneToMany(mappedBy = "infoCet")
     private List<FailedInfoCet> failedInfoCets;
-
 }

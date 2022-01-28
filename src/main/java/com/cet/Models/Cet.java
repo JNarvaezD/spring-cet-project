@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity @NoArgsConstructor @Data @Builder @AllArgsConstructor
 public class Cet {
@@ -20,8 +19,5 @@ public class Cet {
 
     @Column(name = "fecha_proceso")
     private LocalDate fechaProceso;
-
-    @OneToMany(mappedBy = "cet")
-    private List<InfoCet> infoCets;
 
 }

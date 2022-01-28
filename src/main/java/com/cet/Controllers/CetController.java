@@ -82,7 +82,7 @@ public class CetController {
                         .telefonoFijo(record.getString(12))
                         .celular(record.getString(13))
                         .covidContacto(Integer.parseInt(record.getString(14)))
-                        .cet(cet)
+                        .cetId(cet.getId())
                         .build();
                 infoCetList.add(infoCet);
             });

@@ -61,7 +61,7 @@ public class InfoCetControllerTest {
                 .telefonoFijo("6324567")
                 .celular("3102764356")
                 .covidContacto(1)
-                .cet(cet)
+                .cetId(cet.getId())
                 .fueConfirmado(false)
                 .build();
 
@@ -95,7 +95,7 @@ public class InfoCetControllerTest {
                 .telefonoFijo("3434556")
                 .celular("4357890976")
                 .covidContacto(1)
-                .cet(cet)
+                .cetId(cet.getId())
                 .fueConfirmado(false)
                 .productoFinanciero(false)
                 .entidadFinancieraId(null)
@@ -129,7 +129,7 @@ public class InfoCetControllerTest {
                 .telefonoFijo(infoCetToReturn.getTelefonoFijo())
                 .celular(infoCetToReturn.getCelular())
                 .covidContacto(infoCetToReturn.getCovidContacto())
-                .cet(infoCetToReturn.getCet())
+                .cet(infoCetToReturn.getCetId())
                 .fueConfirmado(infoCetToReturn.getFueConfirmado())
                 .productoFinanciero(infoCetToReturn.getProductoFinanciero())
                 .entidadFinancieraId(null)

@@ -57,7 +57,7 @@ public class InfoCetServiceTest {
                 .telefonoFijo("6324567")
                 .celular("3102764356")
                 .covidContacto(1)
-                .cet(cet)
+                .cetId(cet.getId())
                 .fueConfirmado(false)
                 .build();
 
@@ -75,7 +75,7 @@ public class InfoCetServiceTest {
                 .telefonoFijo(infoCetEntity.getTelefonoFijo())
                 .celular(infoCetEntity.getCelular())
                 .covidContacto(infoCetEntity.getCovidContacto())
-                .cet(infoCetEntity.getCet())
+                .cet(infoCetEntity.getCetId())
                 .fueConfirmado(infoCetEntity.getFueConfirmado())
                 .productoFinanciero(false)
                 .entidadFinancieraId(null)

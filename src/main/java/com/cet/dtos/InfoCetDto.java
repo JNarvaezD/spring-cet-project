@@ -1,5 +1,4 @@
 package com.cet.dtos;
-import com.cet.Models.Cet;
 import lombok.Builder;
 import lombok.Data;
 
@@ -104,7 +103,7 @@ public class InfoCetDto {
     private String noEfectividad;
 
     @NotNull
-    private Cet cet;
+    private Long cet;
 
     private Boolean updatingInfoCet;
 
