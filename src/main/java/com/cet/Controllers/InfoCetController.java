@@ -32,9 +32,11 @@ public class InfoCetController {
         return new ResponseEntity<>("El registro con id " + id + " no ha sido encontrado", HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping
-    public ResponseEntity<InfoCet> update(@RequestBody @Valid InfoCetDto request) {
-        return new ResponseEntity<>(infoCetService.update(request.getId(), request), HttpStatus.OK);
+    @PutMapping("/{id}")
+    public ResponseEntity<InfoCet> update(@PathVariable("id") Long idConfirmado, @RequestBody @Valid InfoCetDto request) {
+        System.out.println("el id del confirmado " + idConfirmado);
+        System.out.println("el request " + request);
+        return new ResponseEntity<>(infoCetService.update(idConfirmado, request), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

@@ -5,7 +5,6 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data @Builder
 public class InfoCetDto {
@@ -62,7 +61,7 @@ public class InfoCetDto {
     @NotBlank
     private String celular;
 
-    private Date fechaExpedicion;
+    private LocalDate fechaExpedicion;
 
     @NotBlank
     private String email;

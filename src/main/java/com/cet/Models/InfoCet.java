@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Entity @Data @AllArgsConstructor @NoArgsConstructor @Builder
@@ -66,7 +65,7 @@ public class InfoCet {
 
     private String celular;
 
-    private Date fechaExpedicion;
+    private LocalDate fechaExpedicion;
 
     private String email;
 

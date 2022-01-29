@@ -3,7 +3,6 @@ package com.cet.mock.testing.controllers;
 import com.cet.Controllers.InfoCetController;
 import com.cet.Models.Cet;
 import com.cet.Models.InfoCet;
-import com.cet.Repositories.InfoCetRepository;
 import com.cet.Services.InfoCetService;
 import com.cet.dtos.InfoCetDto;
 import com.fasterxml.jackson.databind.ObjectMapper;

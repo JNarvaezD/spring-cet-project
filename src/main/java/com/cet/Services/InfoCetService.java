@@ -9,6 +9,7 @@ import com.cet.utils.InfoCetUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +31,11 @@ public class InfoCetService {
     }
 
     public InfoCet update(Long idConfirmado, InfoCetDto infoCetDto) {
+
+        if(infoCetDto.getFechaExpedicion() == null) {
+            infoCetDto.setFechaExpedicion(LocalDate.of(1900, 1, 1));
+        }
+
         InfoCet infoCet = InfoCet.builder()
                 .id(infoCetDto.getId())
                 .numeroCaso(infoCetDto.getNumeroCaso())
@@ -60,20 +66,30 @@ public class InfoCetService {
                 .parentescoId(infoCetDto.getParentescoId())
                 .compartenGastos(infoCetDto.getCompartenGastos())
                 .cetId(infoCetDto.getCet())
+                .covidContacto(infoCetDto.getCovidContacto())
+                .fueConfirmado(infoCetDto.getFueConfirmado())
                 .build();
 
         if(infoCetDto.getLocaliza()) {
             infoCet.setNoEfectividad(infoCetDto.getNoEfectividad());
+            InfoCetUtils.setCovidContactoAndFueConfirmado(
+                    infoCet.getCovidContacto(),
+                    infoCet.getFueConfirmado(),
+                    idConfirmado,
+                    infoCet.getId()
+            );
 
             Optional<InfoCet> cabezaFamiliar = infoCetRepository.findOne(idConfirmado);
 
             if(cabezaFamiliar.isPresent() && cabezaFamiliar.get().getCovidContacto() == 1) {
-                infoCet.setTipoidAfConfirmado(cabezaFamiliar.get().getTipoidAfConfirmado());
-                infoCet.setIdentificacionAfConfirmado(cabezaFamiliar.get().getIdentificacionAfConfirmado());
-                infoCet.setIdBduaAfConfirmado(cabezaFamiliar.get().getIdBduaAfConfirmado());
+                infoCet.setTipoidAfConfirmado(cabezaFamiliar.get().getTipoId());
+                infoCet.setIdentificacionAfConfirmado(cabezaFamiliar.get().getIdentificacion());
+                infoCet.setIdBduaAfConfirmado(cabezaFamiliar.get().getBduaAfiliadoId());
+                infoCet.setFueConfirmado(InfoCetUtils.getFueConfirmado());
+                infoCet.setCovidContacto(InfoCetUtils.getCovidContacto());
             }
 
-            return infoCetRepository.update(infoCet);
+            infoCetRepository.update(infoCet);
         } else {
             FailedInfoCet failedInfoCet = FailedInfoCet.builder()
                     .infoCet(infoCet)
