@@ -7,10 +7,12 @@ import com.cet.Repositories.InfoCetRepository;
 import com.cet.dtos.InfoCetDto;
 import com.cet.utils.InfoCetUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -68,6 +70,7 @@ public class InfoCetService {
                 .cetId(infoCetDto.getCet())
                 .covidContacto(infoCetDto.getCovidContacto())
                 .fueConfirmado(infoCetDto.getFueConfirmado())
+                .noEfectividad(infoCetDto.getNoEfectividad())
                 .build();
 
         if(infoCetDto.getLocaliza()) {
@@ -95,41 +98,53 @@ public class InfoCetService {
                     .infoCet(infoCet)
                     .descripcion(infoCetDto.getNoEfectividad())
                     .build();
+
             failedInfoCetRepository.save(failedInfoCet);
+            infoCetRepository.update(infoCet);
         }
 
         return infoCetRepository.findOne(idConfirmado).get();
     }
 
     public InfoCet vincularContacto(Long idContacto, Long idConfirmado) {
-        Optional<InfoCet> confirmado = infoCetRepository.findOne(idContacto);
-        Optional<InfoCet> contacto = infoCetRepository.findOne(idConfirmado);
+        Optional<InfoCet> getConfirmado = infoCetRepository.findOne(idConfirmado);
+        Optional<InfoCet> getContacto = infoCetRepository.findOne(idContacto);
 
-        if(confirmado.isPresent() && contacto.isPresent()) {
+        if(getConfirmado.isPresent() && getContacto.isPresent()) {
+            InfoCet confirmado = getConfirmado.get();
+            InfoCet contacto = getContacto.get();
+
             InfoCetUtils.setCovidContactoAndFueConfirmado(
-                    contacto.get().getCovidContacto(),
-                    contacto.get().getFueConfirmado(),
-                    confirmado.get().getId(),
-                    contacto.get().getId()
+                    contacto.getCovidContacto(),
+                    contacto.getFueConfirmado(),
+                    confirmado.getId(),
+                    contacto.getId()
             );
 
-            if(contacto.get().getIdentificacionAfConfirmado().isEmpty()){
-                contacto.get().setCovidContacto(InfoCetUtils.getCovidContacto());
-                contacto.get().setFueConfirmado(InfoCetUtils.getFueConfirmado());
-                contacto.get().setIdBduaAfConfirmado(confirmado.get().getBduaAfiliadoId());
-                contacto.get().setTipoidAfConfirmado(confirmado.get().getTipoId());
-                contacto.get().setIdentificacionAfConfirmado(confirmado.get().getIdentificacion());
-                infoCetRepository.save(contacto.get());
+            if(contacto.getIdentificacionAfConfirmado().isEmpty()){
+                contacto.setCovidContacto(InfoCetUtils.getCovidContacto());
+                contacto.setFueConfirmado(InfoCetUtils.getFueConfirmado());
+                contacto.setIdBduaAfConfirmado(confirmado.getBduaAfiliadoId());
+                contacto.setTipoidAfConfirmado(confirmado.getTipoId());
+                contacto.setIdentificacionAfConfirmado(confirmado.getIdentificacion());
+                infoCetRepository.save(contacto);
             } else {
-                contacto.get().setCovidContacto(InfoCetUtils.getCovidContacto());
-                contacto.get().setFueConfirmado(InfoCetUtils.getFueConfirmado());
-                contacto.get().setIdBduaAfConfirmado(null);
-                contacto.get().setTipoidAfConfirmado(null);
-                contacto.get().setIdentificacionAfConfirmado(null);
-                infoCetRepository.save(contacto.get());
+                contacto.setCovidContacto(InfoCetUtils.getCovidContacto());
+                contacto.setFueConfirmado(InfoCetUtils.getFueConfirmado());
+                contacto.setIdBduaAfConfirmado(null);
+                contacto.setTipoidAfConfirmado(null);
+                contacto.setIdentificacionAfConfirmado(null);
+                contacto.setProductoFinanciero(null);
+                contacto.setGiroAFamiliar(null);
+                contacto.setCumpleAislamiento(null);
+                contacto.setAutorizaEps(null);
+                contacto.setParentescoId(null);
+                contacto.setCompartenGastos(null);
+                infoCetRepository.save(contacto);
             }
+            return confirmado;
         }
-        return confirmado.get();
+        throw new NoSuchElementException();
     }
 
     public boolean delete(Long id) {

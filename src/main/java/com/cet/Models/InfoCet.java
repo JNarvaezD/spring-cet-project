@@ -101,7 +101,4 @@ public class InfoCet {
     private String noEfectividad;
 
     private Long cetId;
-
-    @OneToMany(mappedBy = "infoCet")
-    private List<FailedInfoCet> failedInfoCets;
 }

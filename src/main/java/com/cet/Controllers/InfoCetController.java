@@ -34,8 +34,6 @@ public class InfoCetController {
 
     @PutMapping("/{id}")
     public ResponseEntity<InfoCet> update(@PathVariable("id") Long idConfirmado, @RequestBody @Valid InfoCetDto request) {
-        System.out.println("el id del confirmado " + idConfirmado);
-        System.out.println("el request " + request);
         return new ResponseEntity<>(infoCetService.update(idConfirmado, request), HttpStatus.OK);
     }
 
@@ -46,6 +44,12 @@ public class InfoCetController {
             return new ResponseEntity<>("Registro eliminado con exito", HttpStatus.OK);
         }
         return new ResponseEntity<>("El registro con id " + id + " no ha sido encontrado", HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("/unlink/contacto/{idContacto}/confirmado/{idConfirmado}")
+    public ResponseEntity<InfoCet> unlinkContactoOfConfirmado(@PathVariable("idContacto") Long idContacto, @PathVariable("idConfirmado") Long idConfirmado) {
+        InfoCet confirmado = infoCetService.vincularContacto(idContacto, idConfirmado);
+        return new ResponseEntity<>(confirmado, HttpStatus.OK);
     }
 
 }
