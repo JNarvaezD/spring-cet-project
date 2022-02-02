@@ -1,4 +1,4 @@
-package integration;
+package com.cet.integration;
 
 import com.cet.CetApplication;
 import org.junit.jupiter.api.Test;
@@ -67,6 +67,47 @@ class CetControllerTest {
 
         MvcResult result = mockMvc.perform(multipart("/cets/upload-data").file(file)).andReturn();
         assertEquals(204, result.getResponse().getStatus());
+    }
+
+    @Test
+    void givenFileWithTwoDelimitersShouldThrowException() throws Exception {
+        Path getFile = Paths.get("C:\\Users\\susje\\Downloads\\CCF033COVID15012021ONEROWTWODELIMITERS.TXT");
+        String content = Files.readString(getFile, StandardCharsets.ISO_8859_1);
+        MockMultipartFile file = new MockMultipartFile(
+                "file",
+                getFile.toFile().getName(),
+                MediaType.TEXT_PLAIN_VALUE,
+                content.getBytes()
+        );
+
+        Exception exception = assertThrows(Exception.class, () ->
+                mockMvc.perform(multipart("/cets/upload-data").file(file)).andReturn()
+        );
+        assertEquals(
+                "Se han encontrado mas de dos delimitadores en el archivo",
+                exception.getMessage().substring(exception.getMessage().indexOf(": ") + 2)
+        );
+    }
+
+    @Test
+    void givenFileWithoutAllowedDelimitersShouldReturnException() throws Exception {
+        Path getFile = Paths.get("C:\\Users\\susje\\Downloads\\CCF033COVID15012021NOTALLOWEDDELIMITERS.TXT");
+        String content = Files.readString(getFile, StandardCharsets.ISO_8859_1);
+        System.out.println("El contenido " + content);
+        MockMultipartFile file = new MockMultipartFile(
+                "file",
+                getFile.toFile().getName(),
+                MediaType.TEXT_PLAIN_VALUE,
+                content.getBytes()
+        );
+
+        Exception exception = assertThrows(Exception.class, () ->
+                mockMvc.perform(multipart("/cets/upload-data").file(file)).andReturn()
+        );
+        assertEquals(
+                "El archivo no esta separado por los delimitadores permitidos",
+                exception.getMessage()
+        );
     }
 
 }

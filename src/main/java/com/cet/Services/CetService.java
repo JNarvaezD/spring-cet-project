@@ -53,8 +53,4 @@ public class CetService {
         return cetRepository.findByNombreArchivo(name);
     }
 
-    public boolean hasMoreThanOneDelimiter(String content){
-        return true;
-    }
-
 }

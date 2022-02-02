@@ -130,7 +130,7 @@ public class InfoCetServiceTest {
         when(infoCetRepository.update(any())).thenReturn(infoCetUpdated);
         InfoCet responseService = infoCetService.update(infoCetPayload.getId(), infoCetDto);
 
-        verify(infoCetRepository, times(1)).findOne(anyLong());
+        verify(infoCetRepository, times(2)).findOne(anyLong());
         verify(infoCetRepository, times(1)).update(any());
         verify(failedInfoCetRepository, times(0)).save(any());
 
@@ -149,7 +149,7 @@ public class InfoCetServiceTest {
         infoCetResponseExpected.setNoEfectividad(infoCetDtoPayload.getNoEfectividad());
 
         FailedInfoCet failedInfoCet = FailedInfoCet.builder()
-                .infoCet(infoCetEntity)
+                .infoCetId(infoCetEntity.getId())
                 .descripcion(infoCetDto.getNoEfectividad())
                 .build();
 
@@ -159,7 +159,7 @@ public class InfoCetServiceTest {
         InfoCet responseService = infoCetService.update(infoCetDtoPayload.getId(), infoCetDtoPayload);
 
         verify(infoCetRepository, times(1)).findOne(anyLong());
-        verify(infoCetRepository, times(0)).update(any());
+        verify(infoCetRepository, times(1)).update(any());
         verify(failedInfoCetRepository, times(1)).save(any());
 
         assertEquals(responseService.getNoEfectividad(), infoCetDtoPayload.getNoEfectividad());

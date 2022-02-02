@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity @Data @AllArgsConstructor @NoArgsConstructor @Builder
 public class InfoCet {
@@ -101,4 +100,5 @@ public class InfoCet {
     private String noEfectividad;
 
     private Long cetId;
+
 }

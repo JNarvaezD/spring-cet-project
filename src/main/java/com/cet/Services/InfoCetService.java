@@ -7,7 +7,6 @@ import com.cet.Repositories.InfoCetRepository;
 import com.cet.dtos.InfoCetDto;
 import com.cet.utils.InfoCetUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -95,7 +94,7 @@ public class InfoCetService {
             infoCetRepository.update(infoCet);
         } else {
             FailedInfoCet failedInfoCet = FailedInfoCet.builder()
-                    .infoCet(infoCet)
+                    .infoCetId(infoCet.getId())
                     .descripcion(infoCetDto.getNoEfectividad())
                     .build();
 

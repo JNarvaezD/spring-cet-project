@@ -5,6 +5,7 @@ import com.cet.Models.InfoCet;
 import com.cet.Repositories.InfoCetRepository;
 import com.cet.Services.CetService;
 import com.cet.dtos.CetDto;
+import com.cet.utils.FileDelimitersUtil;
 import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
@@ -22,6 +23,7 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController @RequestMapping("/cets")
@@ -34,7 +36,7 @@ public class CetController {
     private InfoCetRepository infoCetRepository;
 
     @PostMapping("/upload-data")
-    public ResponseEntity<String> uploadData(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<String> uploadData(@RequestParam("file") MultipartFile file) throws Exception {
         try {
             if(cetService.findByNombreArchivo(file.getOriginalFilename())) {
                 return new ResponseEntity<>(
@@ -43,12 +45,15 @@ public class CetController {
                 );
             }
 
-            List<InfoCet> infoCetList = new ArrayList<>();
+            System.out.println("el contenido que llego " + new CsvParser(new CsvParserSettings()).parseAllRecords(file.getInputStream()).toString());
 
+            Character delimiter = FileDelimitersUtil.returnDelimiter(new CsvParser(new CsvParserSettings()).parseAllRecords(file.getInputStream()).toString(), '|', ',', ';');
+
+            List<InfoCet> infoCetList = new ArrayList<>();
             InputStream inputStream = file.getInputStream();
             CsvParserSettings settings = new CsvParserSettings();
             settings.setHeaderExtractionEnabled(true);
-            settings.setDelimiterDetectionEnabled(true, '|', ',');
+            settings.setDelimiterDetectionEnabled(true, delimiter);
             CsvParser parser = new CsvParser(settings);
 
             List<Record> parseAllRecords = parser.parseAllRecords(inputStream);
