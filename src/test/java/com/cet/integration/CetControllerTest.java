@@ -26,7 +26,7 @@ class CetControllerTest {
 
     @Test
     void givenFileShouldUploadAllData() throws Exception {
-        Path getFile = Paths.get("C:\\Users\\susje\\Downloads\\CCF033COVID15012021.TXT");
+        Path getFile = Paths.get("C:\\Users\\susje\\Downloads\\files\\CCF033COVID15012021.TXT");
         String content = Files.readString(getFile, StandardCharsets.ISO_8859_1);
         MockMultipartFile file = new MockMultipartFile(
                 "file",
@@ -41,7 +41,7 @@ class CetControllerTest {
 
     @Test
     void givenFileAlreadyUploadedShouldReturn422StatusCode() throws Exception {
-        Path getFile = Paths.get("C:\\Users\\susje\\Downloads\\CCF033COVID15012021.TXT");
+        Path getFile = Paths.get("C:\\Users\\susje\\Downloads\\files\\CCF033COVID15012021.TXT");
         String content = Files.readString(getFile, StandardCharsets.ISO_8859_1);
         MockMultipartFile file = new MockMultipartFile(
                 "file",
@@ -56,7 +56,7 @@ class CetControllerTest {
 
     @Test
     void givenEmptyFileShouldReturn204StatusCode() throws Exception {
-        Path getFile = Paths.get("C:\\Users\\susje\\Downloads\\CCF033COVID15012021EMPTY.TXT");
+        Path getFile = Paths.get("C:\\Users\\susje\\Downloads\\files\\CCF033COVID15012021EMPTY.TXT");
         String content = Files.readString(getFile, StandardCharsets.ISO_8859_1);
         MockMultipartFile file = new MockMultipartFile(
                 "file",
@@ -71,7 +71,7 @@ class CetControllerTest {
 
     @Test
     void givenFileWithTwoDelimitersShouldThrowException() throws Exception {
-        Path getFile = Paths.get("C:\\Users\\susje\\Downloads\\CCF033COVID15012021ONEROWTWODELIMITERS.TXT");
+        Path getFile = Paths.get("C:\\Users\\susje\\Downloads\\files\\CCF033COVID15012021ONEROWTWODELIMITERS.TXT");
         String content = Files.readString(getFile, StandardCharsets.ISO_8859_1);
         MockMultipartFile file = new MockMultipartFile(
                 "file",
@@ -91,7 +91,7 @@ class CetControllerTest {
 
     @Test
     void givenFileWithoutAllowedDelimitersShouldReturnException() throws Exception {
-        Path getFile = Paths.get("C:\\Users\\susje\\Downloads\\CCF033COVID15012021NOTALLOWEDDELIMITERS.TXT");
+        Path getFile = Paths.get("C:\\Users\\susje\\Downloads\\files\\CCF033COVID15012021NOTALLOWEDDELIMITERS.TXT");
         String content = Files.readString(getFile, StandardCharsets.ISO_8859_1);
         System.out.println("El contenido " + content);
         MockMultipartFile file = new MockMultipartFile(
@@ -104,6 +104,7 @@ class CetControllerTest {
         Exception exception = assertThrows(Exception.class, () ->
                 mockMvc.perform(multipart("/cets/upload-data").file(file)).andReturn()
         );
+
         assertEquals(
                 "El archivo no esta separado por los delimitadores permitidos",
                 exception.getMessage()

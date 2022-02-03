@@ -36,7 +36,7 @@ class InfoCetControllerTest {
 
     @Test
     void firstActivityToRun() throws Exception {
-        Path getFile = Paths.get("C:\\Users\\susje\\Downloads\\CCF033COVID15012021.TXT");
+        Path getFile = Paths.get("C:\\Users\\susje\\Downloads\\files\\CCF033COVID15012021.TXT");
         String content = Files.readString(getFile, StandardCharsets.ISO_8859_1);
         MockMultipartFile file = new MockMultipartFile(
                 "file",
