@@ -288,12 +288,9 @@ class InfoCetControllerTest {
         MvcResult getConfirmadoNoLocalizado = mvc.perform(MockMvcRequestBuilders
                 .get("/info-cets/" + 3L)).andReturn();
 
-        System.out.println("miralo " + getConfirmadoNoLocalizado);
-
-
         InfoCet confirmadoNoLocalizado = obm.readValue(getConfirmadoNoLocalizado.getResponse().getContentAsString(), InfoCet.class);
         assertEquals("Telefono apagado", confirmadoNoLocalizado.getNoEfectividad());
-        //assertEquals(1, confirmadoNoLocalizado.getFailedInfoCets().size());
+        assertEquals(1, confirmadoNoLocalizado.getFailedInfoCets().size());
     }
 
 }

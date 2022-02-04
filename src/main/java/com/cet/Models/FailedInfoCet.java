@@ -14,7 +14,9 @@ public class FailedInfoCet {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Long infoCetId;
+    @ManyToOne
+    @JoinColumn(name = "infocet")
+    private InfoCet infocet;
 
     private String descripcion;
 

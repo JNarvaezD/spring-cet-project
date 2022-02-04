@@ -1,5 +1,6 @@
 package com.cet.dtos;
 
+import com.cet.Models.InfoCet;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,7 +12,7 @@ public class FailedInfoCetDto {
     private Long id;
 
     @NotEmpty
-    private Long infoCetId;
+    private InfoCet infoCet;
 
     @NotEmpty
     private String descripcion;

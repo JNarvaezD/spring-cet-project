@@ -93,7 +93,6 @@ class CetControllerTest {
     void givenFileWithoutAllowedDelimitersShouldReturnException() throws Exception {
         Path getFile = Paths.get("C:\\Users\\susje\\Downloads\\files\\CCF033COVID15012021NOTALLOWEDDELIMITERS.TXT");
         String content = Files.readString(getFile, StandardCharsets.ISO_8859_1);
-        System.out.println("El contenido " + content);
         MockMultipartFile file = new MockMultipartFile(
                 "file",
                 getFile.toFile().getName(),

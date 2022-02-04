@@ -19,7 +19,7 @@ public class FailedInfoCetService {
     }
 
     public FailedInfoCet save(FailedInfoCetDto failedInfoCetDto) {
-        FailedInfoCet failedInfoCet = FailedInfoCet.builder().infoCetId(failedInfoCetDto.getInfoCetId())
+        FailedInfoCet failedInfoCet = FailedInfoCet.builder().infocet(failedInfoCetDto.getInfoCet())
                 .descripcion(failedInfoCetDto.getDescripcion())
                 .build();
         return failedInfoCetRepository.save(failedInfoCet);
