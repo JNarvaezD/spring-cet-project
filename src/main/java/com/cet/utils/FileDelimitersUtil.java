@@ -11,16 +11,17 @@ public class FileDelimitersUtil {
 
         for (char delimiter : delimiters) {
             boolean delimiterInFileFounded = content.contains(String.valueOf(delimiter));
+            long numberOfOcurrences = content.chars().filter(x -> x == delimiter).count();
 
-            if(delimiterInFileFounded) {
+            if(delimiterInFileFounded && numberOfOcurrences > 1) {
                 delimitersFoundInFileContent.add(delimiter);
             }
         }
 
         if (delimitersFoundInFileContent.size() > 1) {
-            throw new Exception("Se han encontrado mas de dos delimitadores en el archivo");
+            throw new Exception("More than one delimiters were found in the file");
         } else if(delimitersFoundInFileContent.size() == 0) {
-            throw new Exception("El archivo no esta separado por los delimitadores permitidos");
+            throw new Exception("File is not separated with the allowed delimiters");
         }
 
         return delimitersFoundInFileContent.get(0);

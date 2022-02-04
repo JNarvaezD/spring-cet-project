@@ -84,7 +84,7 @@ class CetControllerTest {
                 mockMvc.perform(multipart("/cets/upload-data").file(file)).andReturn()
         );
         assertEquals(
-                "Se han encontrado mas de dos delimitadores en el archivo",
+                "More than one delimiters were found in the file",
                 exception.getMessage().substring(exception.getMessage().indexOf(": ") + 2)
         );
     }
@@ -105,10 +105,7 @@ class CetControllerTest {
                 mockMvc.perform(multipart("/cets/upload-data").file(file)).andReturn()
         );
 
-        assertEquals(
-                "El archivo no esta separado por los delimitadores permitidos",
-                exception.getMessage()
-        );
+        assertEquals("File is not separated with the allowed delimiters", exception.getMessage().substring(exception.getMessage().indexOf(": ") + 2));
     }
 
 }
