@@ -1,5 +1,6 @@
 package com.cet.Models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,10 +8,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity @Data @AllArgsConstructor @NoArgsConstructor @Builder
+
 public class InfoCet {
 
     @Id
@@ -103,10 +104,8 @@ public class InfoCet {
 
     private Long cetId;
 
-    @OneToMany(
-            fetch = FetchType.EAGER,
-            mappedBy = "infocet"
-    )
+    @OneToMany(mappedBy = "infocet", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<FailedInfoCet> failedInfoCets;
 
 }
