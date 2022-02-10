@@ -1,6 +1,5 @@
 package com.cet.Models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,13 +11,11 @@ import javax.persistence.*;
 public class FailedInfoCet {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "infocet_id")
-    @JsonBackReference
-    private InfoCet infocet;
+    @Column(name = "infocet_id")
+    private Long infocet;
 
     private String descripcion;
 

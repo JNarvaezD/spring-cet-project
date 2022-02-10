@@ -94,7 +94,7 @@ public class InfoCetService {
             infoCetRepository.update(infoCet);
         } else {
             FailedInfoCet failedInfoCet = FailedInfoCet.builder()
-                    .infocet(infoCet)
+                    .infocet(infoCet.getId())
                     .descripcion(infoCetDto.getNoEfectividad())
                     .build();
 

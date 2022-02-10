@@ -149,7 +149,7 @@ public class InfoCetServiceTest {
         infoCetResponseExpected.setNoEfectividad(infoCetDtoPayload.getNoEfectividad());
 
         FailedInfoCet failedInfoCet = FailedInfoCet.builder()
-                .infocet(infoCetEntity)
+                .infocet(infoCetEntity.getId())
                 .descripcion(infoCetDto.getNoEfectividad())
                 .build();
 

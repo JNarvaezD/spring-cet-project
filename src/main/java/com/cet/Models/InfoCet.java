@@ -104,8 +104,8 @@ public class InfoCet {
 
     private Long cetId;
 
-    @OneToMany(mappedBy = "infocet", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @OneToMany()
+    @JoinColumn(name="infocet_id", referencedColumnName="id", nullable = false, insertable = false, updatable = false)
     private List<FailedInfoCet> failedInfoCets;
 
 }

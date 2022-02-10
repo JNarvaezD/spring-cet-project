@@ -33,7 +33,7 @@ public class FailedCetServiceTest {
     @BeforeEach
     void setUp() {
         InfoCet infoCet = InfoCet.builder().id(1L).build();
-        FailedInfoCet failedInfoCet = FailedInfoCet.builder().id(1L).infocet(infoCet).descripcion("Did not connect").build();
+        FailedInfoCet failedInfoCet = FailedInfoCet.builder().id(1L).infocet(infoCet.getId()).descripcion("Did not connect").build();
         failedInfoCetList.add(failedInfoCet);
     }
 
@@ -50,7 +50,7 @@ public class FailedCetServiceTest {
     void shouldReturnSavedFailedInfoCet(){
         InfoCet infoCet = InfoCet.builder().id(1L).build();
         FailedInfoCetDto failedInfoCetDto = FailedInfoCetDto.builder().id(2L).infoCet(infoCet).descripcion("Wrong number").build();
-        FailedInfoCet failedInfoCet = FailedInfoCet.builder().id(failedInfoCetDto.getId()).infocet(infoCet).descripcion(failedInfoCetDto.getDescripcion()).build();
+        FailedInfoCet failedInfoCet = FailedInfoCet.builder().id(failedInfoCetDto.getId()).infocet(infoCet.getId()).descripcion(failedInfoCetDto.getDescripcion()).build();
 
         when(this.failedInfoCetRepository.save(any())).thenReturn(failedInfoCet);
         FailedInfoCet failedInfoCetsServiceReturned = this.failedInfoCetService.save(failedInfoCetDto);
