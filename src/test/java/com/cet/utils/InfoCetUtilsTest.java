@@ -1,6 +1,5 @@
 package com.cet.utils;
 
-import com.cet.utils.InfoCetUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

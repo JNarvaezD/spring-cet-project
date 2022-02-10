@@ -146,7 +146,7 @@ public class InfoCetControllerTest {
                 .build();
 
         when(infoCetService.update(anyLong(), any())).thenReturn(infoCetToReturn);
-        MvcResult responseMVC = mockMvc.perform(put("/info-cets")
+        MvcResult responseMVC = mockMvc.perform(put("/info-cets/" + infoCetDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(infoCetDto)))
                 .andExpect(status().isOk())
