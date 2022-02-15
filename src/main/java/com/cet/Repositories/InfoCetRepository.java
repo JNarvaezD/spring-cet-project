@@ -15,5 +15,6 @@ public interface InfoCetRepository {
     void delete(Long id);
     Optional<InfoCet> findByIdentificacionAndCetId(String identificacion, Long cetId);
     void saveAll(List<InfoCet> infoCets);
+    List<InfoCet> findContactos(String tipoId, String identificacion);
 
 }

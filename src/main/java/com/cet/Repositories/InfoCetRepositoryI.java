@@ -46,7 +46,12 @@ public class InfoCetRepositoryI implements InfoCetRepository{
 
     @Override
     public void saveAll(List<InfoCet> infoCets) {
-        this.infoCetCrudRepository.saveAll(infoCets);
+        infoCetCrudRepository.saveAll(infoCets);
+    }
+
+    @Override
+    public List<InfoCet> findContactos(String tipoId, String identificacion) {
+        return infoCetCrudRepository.findAllByTipoidAfConfirmadoAndIdentificacionAfConfirmado(tipoId, identificacion);
     }
 
 }

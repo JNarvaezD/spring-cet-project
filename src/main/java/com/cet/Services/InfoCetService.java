@@ -1,5 +1,6 @@
 package com.cet.Services;
 
+import com.cet.InfoCetResponseBody;
 import com.cet.Models.FailedInfoCet;
 import com.cet.Models.InfoCet;
 import com.cet.Repositories.FailedInfoCetRepository;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class InfoCetService {
@@ -29,6 +31,55 @@ public class InfoCetService {
 
     public Optional<InfoCet> findOne(Long id) {
         return infoCetRepository.findOne(id);
+    }
+
+    public InfoCetResponseBody show(Long id) {
+        Optional<InfoCet> confirmado = findOne(id);
+        if(confirmado.isPresent()) {
+            InfoCet cabezaHogar = confirmado.get();
+            List<InfoCet> contactos = infoCetRepository.findContactos(cabezaHogar.getTipoId(), cabezaHogar.getIdentificacion())
+                    .stream().filter(contacto -> contacto.getCovidContacto() == 2)
+                    .collect(Collectors.toList());
+
+            return InfoCetResponseBody.builder().id(cabezaHogar.getId())
+                    .numeroCaso(cabezaHogar.getNumeroCaso())
+                    .fechaDiagnostico(cabezaHogar.getFechaDiagnostico())
+                    .bduaAfiliadoId(cabezaHogar.getBduaAfiliadoId())
+                    .tipoId(cabezaHogar.getTipoId())
+                    .identificacion(cabezaHogar.getIdentificacion())
+                    .nombre1(cabezaHogar.getNombre1())
+                    .nombre2(cabezaHogar.getNombre2())
+                    .apellido1(cabezaHogar.getApellido1())
+                    .apellido2(cabezaHogar.getApellido2())
+                    .fechaNacimiento(cabezaHogar.getFechaNacimiento())
+                    .sexo(cabezaHogar.getSexo())
+                    .fallecido(cabezaHogar.getFallecido())
+                    .codEps(cabezaHogar.getCodEps())
+                    .productoFinanciero(cabezaHogar.getProductoFinanciero())
+                    .entidadFinancieraId(cabezaHogar.getEntidadFinancieraId())
+                    .giroAFamiliar(cabezaHogar.getGiroAFamiliar())
+                    .telefonoFijo(cabezaHogar.getTelefonoFijo())
+                    .celular(cabezaHogar.getCelular())
+                    .fechaExpedicion(cabezaHogar.getFechaExpedicion())
+                    .email(cabezaHogar.getEmail())
+                    .direccion(cabezaHogar.getDireccion())
+                    .codigoDepartamento(cabezaHogar.getCodigoDepartamento())
+                    .codigoMunicipio(cabezaHogar.getCodigoMunicipio())
+                    .idBduaAfConfirmado(cabezaHogar.getIdBduaAfConfirmado())
+                    .tipoidAfConfirmado(cabezaHogar.getTipoidAfConfirmado())
+                    .identificacionAfConfirmado(cabezaHogar.getIdentificacionAfConfirmado())
+                    .cumpleAislamiento(cabezaHogar.getCumpleAislamiento())
+                    .autorizaEps(cabezaHogar.getAutorizaEps())
+                    .covidContacto(cabezaHogar.getCovidContacto())
+                    .parentescoId(cabezaHogar.getParentescoId())
+                    .compartenGastos(cabezaHogar.getCompartenGastos())
+                    .fueConfirmado(cabezaHogar.getFueConfirmado())
+                    .noEfectividad(cabezaHogar.getNoEfectividad())
+                    .cetId(cabezaHogar.getCetId())
+                    .contatos(contactos)
+                    .build();
+        }
+        throw new NoSuchElementException();
     }
 
     public InfoCet update(Long idConfirmado, InfoCetDto infoCetDto) {

@@ -1,5 +1,6 @@
 package com.cet.Controllers;
 
+import com.cet.InfoCetResponseBody;
 import com.cet.Models.InfoCet;
 import com.cet.Services.InfoCetService;
 import com.cet.dtos.InfoCetDto;
@@ -24,12 +25,17 @@ public class InfoCetController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> find(@PathVariable("id") Long id) {
+    public ResponseEntity<?> findOne(@PathVariable("id") Long id) {
         Optional<InfoCet> infoCet = infoCetService.findOne(id);
         if(infoCet.isPresent()) {
             return new ResponseEntity<>(infoCet.get(), HttpStatus.OK);
         }
         return new ResponseEntity<>("El registro con id " + id + " no ha sido encontrado", HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/show/{id}")
+    public ResponseEntity<InfoCetResponseBody> showOne(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(infoCetService.show(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

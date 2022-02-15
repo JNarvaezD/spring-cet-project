@@ -1,6 +1,7 @@
 package com.cet.integration;
 
 import com.cet.CetApplication;
+import com.cet.InfoCetResponseBody;
 import com.cet.Models.InfoCet;
 import com.cet.dtos.InfoCetDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -86,29 +87,29 @@ class InfoCetControllerTest {
 
     @Test
     void givenIdShouldUpdateThatId() throws Exception {
-        MvcResult result = mvc.perform(MockMvcRequestBuilders
+        MvcResult getConfirmado = mvc.perform(MockMvcRequestBuilders
                         .get("/info-cets/" + 1L)).andReturn();
 
-        assertEquals(200, result.getResponse().getStatus());
+        assertEquals(200, getConfirmado.getResponse().getStatus());
 
-        InfoCet infoCet = obm.readValue(result.getResponse().getContentAsString(), InfoCet.class);
-        InfoCetDto payload = InfoCetDto.builder().id(infoCet.getId())
-                .numeroCaso(infoCet.getNumeroCaso())
-                .fechaDiagnostico(infoCet.getFechaDiagnostico())
-                .bduaAfiliadoId(infoCet.getBduaAfiliadoId())
-                .tipoId(infoCet.getTipoId())
-                .identificacion(infoCet.getIdentificacion())
-                .nombre1(infoCet.getNombre1())
-                .nombre2(infoCet.getNombre2())
-                .apellido1(infoCet.getApellido1())
-                .apellido2(infoCet.getApellido2())
-                .fechaNacimiento(infoCet.getFechaNacimiento())
-                .sexo(infoCet.getSexo())
-                .codEps(infoCet.getCodEps())
-                .telefonoFijo(infoCet.getTelefonoFijo())
-                .celular(infoCet.getCelular())
-                .covidContacto(infoCet.getCovidContacto())
-                .cet(infoCet.getCetId())
+        InfoCet confirmado = obm.readValue(getConfirmado.getResponse().getContentAsString(), InfoCet.class);
+        InfoCetDto payload = InfoCetDto.builder().id(confirmado.getId())
+                .numeroCaso(confirmado.getNumeroCaso())
+                .fechaDiagnostico(confirmado.getFechaDiagnostico())
+                .bduaAfiliadoId(confirmado.getBduaAfiliadoId())
+                .tipoId(confirmado.getTipoId())
+                .identificacion(confirmado.getIdentificacion())
+                .nombre1(confirmado.getNombre1())
+                .nombre2(confirmado.getNombre2())
+                .apellido1(confirmado.getApellido1())
+                .apellido2(confirmado.getApellido2())
+                .fechaNacimiento(confirmado.getFechaNacimiento())
+                .sexo(confirmado.getSexo())
+                .codEps(confirmado.getCodEps())
+                .telefonoFijo(confirmado.getTelefonoFijo())
+                .celular(confirmado.getCelular())
+                .covidContacto(confirmado.getCovidContacto())
+                .cet(confirmado.getCetId())
                 .productoFinanciero(false)
                 .entidadFinancieraId(null)
                 .giroAFamiliar(true)
@@ -130,15 +131,15 @@ class InfoCetControllerTest {
                 .build();
 
         MvcResult updating = mvc.perform(MockMvcRequestBuilders
-                .put("/info-cets/" + infoCet.getId())
+                .put("/info-cets/" + confirmado.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(obm.writeValueAsString(payload))).andReturn();
 
         InfoCet response = obm.readValue(updating.getResponse().getContentAsString(), InfoCet.class);
         assertEquals(200, updating.getResponse().getStatus());
-        assertEquals(infoCet.getBduaAfiliadoId(), response.getIdBduaAfConfirmado());
-        assertEquals(infoCet.getTipoId(), response.getTipoidAfConfirmado());
-        assertEquals(infoCet.getIdentificacion(), response.getIdentificacionAfConfirmado());
+        assertEquals(confirmado.getBduaAfiliadoId(), response.getIdBduaAfConfirmado());
+        assertEquals(confirmado.getTipoId(), response.getTipoidAfConfirmado());
+        assertEquals(confirmado.getIdentificacion(), response.getIdentificacionAfConfirmado());
         assertEquals("1900-01-01", response.getFechaExpedicion().toString());
         assertFalse(response.getFueConfirmado());
         assertEquals(1, response.getCovidContacto());
@@ -146,31 +147,31 @@ class InfoCetControllerTest {
 
     @Test
     void updateAndLinkContactoWithConfirmado() throws Exception {
-        MvcResult result = mvc.perform(MockMvcRequestBuilders
+        MvcResult getContacto = mvc.perform(MockMvcRequestBuilders
                 .get("/info-cets/" + 2L)).andReturn();
 
-        assertEquals(200, result.getResponse().getStatus());
+        assertEquals(200, getContacto.getResponse().getStatus());
 
-        InfoCet infoCet = obm.readValue(result.getResponse().getContentAsString(), InfoCet.class);
-        assertEquals(2, infoCet.getId());
+        InfoCet contacto = obm.readValue(getContacto.getResponse().getContentAsString(), InfoCet.class);
+        assertEquals(2, contacto.getId());
 
-        InfoCetDto payload = InfoCetDto.builder().id(infoCet.getId())
-                .numeroCaso(infoCet.getNumeroCaso())
-                .fechaDiagnostico(infoCet.getFechaDiagnostico())
-                .bduaAfiliadoId(infoCet.getBduaAfiliadoId())
-                .tipoId(infoCet.getTipoId())
-                .identificacion(infoCet.getIdentificacion())
-                .nombre1(infoCet.getNombre1())
-                .nombre2(infoCet.getNombre2())
-                .apellido1(infoCet.getApellido1())
-                .apellido2(infoCet.getApellido2())
-                .fechaNacimiento(infoCet.getFechaNacimiento())
-                .sexo(infoCet.getSexo())
-                .codEps(infoCet.getCodEps())
-                .telefonoFijo(infoCet.getTelefonoFijo())
-                .celular(infoCet.getCelular())
-                .covidContacto(infoCet.getCovidContacto())
-                .cet(infoCet.getCetId())
+        InfoCetDto payload = InfoCetDto.builder().id(contacto.getId())
+                .numeroCaso(contacto.getNumeroCaso())
+                .fechaDiagnostico(contacto.getFechaDiagnostico())
+                .bduaAfiliadoId(contacto.getBduaAfiliadoId())
+                .tipoId(contacto.getTipoId())
+                .identificacion(contacto.getIdentificacion())
+                .nombre1(contacto.getNombre1())
+                .nombre2(contacto.getNombre2())
+                .apellido1(contacto.getApellido1())
+                .apellido2(contacto.getApellido2())
+                .fechaNacimiento(contacto.getFechaNacimiento())
+                .sexo(contacto.getSexo())
+                .codEps(contacto.getCodEps())
+                .telefonoFijo(contacto.getTelefonoFijo())
+                .celular(contacto.getCelular())
+                .covidContacto(contacto.getCovidContacto())
+                .cet(contacto.getCetId())
                 .productoFinanciero(false)
                 .entidadFinancieraId(null)
                 .giroAFamiliar(true)
@@ -195,24 +196,74 @@ class InfoCetControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(obm.writeValueAsString(payload))).andReturn();
 
-        MvcResult getContacto = mvc.perform(MockMvcRequestBuilders
+        MvcResult getContactoAlreadyLinked = mvc.perform(MockMvcRequestBuilders
                 .get("/info-cets/" + 2L)).andReturn();
 
         InfoCet confirmado = obm.readValue(update.getResponse().getContentAsString(), InfoCet.class);
-        InfoCet contacto = obm.readValue(getContacto.getResponse().getContentAsString(), InfoCet.class);
+        InfoCet contactoAlreadyLinked = obm.readValue(getContactoAlreadyLinked.getResponse().getContentAsString(), InfoCet.class);
 
         assertEquals(200, update.getResponse().getStatus());
-        assertEquals("2017-08-19", contacto.getFechaExpedicion().toString());
-        assertTrue(contacto.getFueConfirmado());
-        assertEquals(2, contacto.getCovidContacto());
+        assertEquals("2017-08-19", contactoAlreadyLinked.getFechaExpedicion().toString());
+        assertTrue(contactoAlreadyLinked.getFueConfirmado());
+        assertEquals(2, contactoAlreadyLinked.getCovidContacto());
 
-        assertEquals(confirmado.getBduaAfiliadoId(), contacto.getIdBduaAfConfirmado());
-        assertEquals(confirmado.getTipoId(), contacto.getTipoidAfConfirmado());
-        assertEquals(confirmado.getIdentificacion(), contacto.getIdentificacionAfConfirmado());
+        assertEquals(confirmado.getBduaAfiliadoId(), contactoAlreadyLinked.getIdBduaAfConfirmado());
+        assertEquals(confirmado.getTipoId(), contactoAlreadyLinked.getTipoidAfConfirmado());
+        assertEquals(confirmado.getIdentificacion(), contactoAlreadyLinked.getIdentificacionAfConfirmado());
     }
 
     @Test
-    void updateAndLinkContactoWithConfirmadoFinishedUnlinkContactoOfConfirmado() throws Exception {
+    void updateAndLinkContactoWithConfirmadoFinishedMustUnlinkContactoFromConfirmado() throws Exception {
+        MvcResult getContacto = mvc.perform(MockMvcRequestBuilders
+                .get("/info-cets/" + 2L)).andReturn();
+
+        assertEquals(200, getContacto.getResponse().getStatus());
+
+        InfoCet contacto = obm.readValue(getContacto.getResponse().getContentAsString(), InfoCet.class);
+        assertEquals(2, contacto.getId());
+
+        InfoCetDto payload = InfoCetDto.builder().id(contacto.getId())
+                .numeroCaso(contacto.getNumeroCaso())
+                .fechaDiagnostico(contacto.getFechaDiagnostico())
+                .bduaAfiliadoId(contacto.getBduaAfiliadoId())
+                .tipoId(contacto.getTipoId())
+                .identificacion(contacto.getIdentificacion())
+                .nombre1(contacto.getNombre1())
+                .nombre2(contacto.getNombre2())
+                .apellido1(contacto.getApellido1())
+                .apellido2(contacto.getApellido2())
+                .fechaNacimiento(contacto.getFechaNacimiento())
+                .sexo(contacto.getSexo())
+                .codEps(contacto.getCodEps())
+                .telefonoFijo(contacto.getTelefonoFijo())
+                .celular(contacto.getCelular())
+                .covidContacto(contacto.getCovidContacto())
+                .cet(contacto.getCetId())
+                .productoFinanciero(false)
+                .entidadFinancieraId(null)
+                .giroAFamiliar(true)
+                .fallecido(false)
+                .fechaExpedicion(LocalDate.of(2017, 8, 19))
+                .email("prueba@mail.com")
+                .direccion("Calle imaginaria #45-54")
+                .codigoDepartamento("01")
+                .codigoMunicipio("234")
+                //here goes the link values
+                .cumpleAislamiento(true)
+                .autorizaEps(true)
+                .parentescoId(2)
+                .compartenGastos(true)
+                //reason of no contact
+                .fueConfirmado(false)
+                .localiza(true)
+                .build();
+
+        mvc.perform(MockMvcRequestBuilders
+                .put("/info-cets/" + 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(obm.writeValueAsString(payload))).andReturn();
+
+
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                 .put("/info-cets/unlink/contacto/" + 2L + "/confirmado/" + 1L)).andReturn();
 
@@ -222,44 +273,44 @@ class InfoCetControllerTest {
                 .get("/info-cets/" + 2L)).andReturn();
         assertEquals(200, findContacto.getResponse().getStatus());
 
-        InfoCet contacto = obm.readValue(findContacto.getResponse().getContentAsString(), InfoCet.class);
-        assertFalse(contacto.getFueConfirmado());
-        assertEquals(1, contacto.getCovidContacto());
-        assertNull(contacto.getIdBduaAfConfirmado());
-        assertNull(contacto.getTipoidAfConfirmado());
-        assertNull(contacto.getIdentificacionAfConfirmado());
-        assertNull(contacto.getProductoFinanciero());
-        assertNull(contacto.getGiroAFamiliar());
-        assertNull(contacto.getCumpleAislamiento());
-        assertNull(contacto.getAutorizaEps());
-        assertNull(contacto.getParentescoId());
+        InfoCet contactoUnlinked = obm.readValue(findContacto.getResponse().getContentAsString(), InfoCet.class);
+        assertFalse(contactoUnlinked.getFueConfirmado());
+        assertEquals(1, contactoUnlinked.getCovidContacto());
+        assertNull(contactoUnlinked.getIdBduaAfConfirmado());
+        assertNull(contactoUnlinked.getTipoidAfConfirmado());
+        assertNull(contactoUnlinked.getIdentificacionAfConfirmado());
+        assertNull(contactoUnlinked.getProductoFinanciero());
+        assertNull(contactoUnlinked.getGiroAFamiliar());
+        assertNull(contactoUnlinked.getCumpleAislamiento());
+        assertNull(contactoUnlinked.getAutorizaEps());
+        assertNull(contactoUnlinked.getParentescoId());
     }
 
     @Test
     void updatingConfirmadoNotAvaliableShouldCreateFailedInfoCet() throws Exception {
-        MvcResult result = mvc.perform(MockMvcRequestBuilders
+        MvcResult getConfirmado = mvc.perform(MockMvcRequestBuilders
                 .get("/info-cets/" + 3L)).andReturn();
 
-        assertEquals(200, result.getResponse().getStatus());
-        InfoCet infoCet = obm.readValue(result.getResponse().getContentAsString(), InfoCet.class);
+        assertEquals(200, getConfirmado.getResponse().getStatus());
+        InfoCet confirmado = obm.readValue(getConfirmado.getResponse().getContentAsString(), InfoCet.class);
 
-        InfoCetDto payload = InfoCetDto.builder().id(infoCet.getId())
-                .numeroCaso(infoCet.getNumeroCaso())
-                .fechaDiagnostico(infoCet.getFechaDiagnostico())
-                .bduaAfiliadoId(infoCet.getBduaAfiliadoId())
-                .tipoId(infoCet.getTipoId())
-                .identificacion(infoCet.getIdentificacion())
-                .nombre1(infoCet.getNombre1())
-                .nombre2(infoCet.getNombre2())
-                .apellido1(infoCet.getApellido1())
-                .apellido2(infoCet.getApellido2())
-                .fechaNacimiento(infoCet.getFechaNacimiento())
-                .sexo(infoCet.getSexo())
-                .codEps(infoCet.getCodEps())
-                .telefonoFijo(infoCet.getTelefonoFijo())
-                .celular(infoCet.getCelular())
-                .covidContacto(infoCet.getCovidContacto())
-                .cet(infoCet.getCetId())
+        InfoCetDto payload = InfoCetDto.builder().id(confirmado.getId())
+                .numeroCaso(confirmado.getNumeroCaso())
+                .fechaDiagnostico(confirmado.getFechaDiagnostico())
+                .bduaAfiliadoId(confirmado.getBduaAfiliadoId())
+                .tipoId(confirmado.getTipoId())
+                .identificacion(confirmado.getIdentificacion())
+                .nombre1(confirmado.getNombre1())
+                .nombre2(confirmado.getNombre2())
+                .apellido1(confirmado.getApellido1())
+                .apellido2(confirmado.getApellido2())
+                .fechaNacimiento(confirmado.getFechaNacimiento())
+                .sexo(confirmado.getSexo())
+                .codEps(confirmado.getCodEps())
+                .telefonoFijo(confirmado.getTelefonoFijo())
+                .celular(confirmado.getCelular())
+                .covidContacto(confirmado.getCovidContacto())
+                .cet(confirmado.getCetId())
                 .productoFinanciero(false)
                 .entidadFinancieraId(null)
                 .giroAFamiliar(true)
@@ -291,6 +342,66 @@ class InfoCetControllerTest {
         InfoCet confirmadoNoLocalizado = obm.readValue(getConfirmadoNoLocalizado.getResponse().getContentAsString(), InfoCet.class);
         assertEquals("Telefono apagado", confirmadoNoLocalizado.getNoEfectividad());
         assertEquals(1, confirmadoNoLocalizado.getFailedInfoCets().size());
+    }
+
+    @Test
+    void updatedContactoWithConfirmadoShouldReturnConfirmadoWithContactos() throws Exception {
+        MvcResult getContacto = mvc.perform(MockMvcRequestBuilders
+                .get("/info-cets/" + 2L)).andReturn();
+
+        assertEquals(200, getContacto.getResponse().getStatus());
+
+        InfoCet contacto = obm.readValue(getContacto.getResponse().getContentAsString(), InfoCet.class);
+        assertEquals(2, contacto.getId());
+
+        InfoCetDto payload = InfoCetDto.builder().id(contacto.getId())
+                .numeroCaso(contacto.getNumeroCaso())
+                .fechaDiagnostico(contacto.getFechaDiagnostico())
+                .bduaAfiliadoId(contacto.getBduaAfiliadoId())
+                .tipoId(contacto.getTipoId())
+                .identificacion(contacto.getIdentificacion())
+                .nombre1(contacto.getNombre1())
+                .nombre2(contacto.getNombre2())
+                .apellido1(contacto.getApellido1())
+                .apellido2(contacto.getApellido2())
+                .fechaNacimiento(contacto.getFechaNacimiento())
+                .sexo(contacto.getSexo())
+                .codEps(contacto.getCodEps())
+                .telefonoFijo(contacto.getTelefonoFijo())
+                .celular(contacto.getCelular())
+                .covidContacto(contacto.getCovidContacto())
+                .cet(contacto.getCetId())
+                .productoFinanciero(false)
+                .entidadFinancieraId(null)
+                .giroAFamiliar(true)
+                .fallecido(false)
+                .fechaExpedicion(LocalDate.of(2017, 8, 19))
+                .email("prueba@mail.com")
+                .direccion("Calle imaginaria #45-54")
+                .codigoDepartamento("01")
+                .codigoMunicipio("234")
+                //here goes the link values
+                .cumpleAislamiento(true)
+                .autorizaEps(true)
+                .parentescoId(2)
+                .compartenGastos(true)
+                //reason of no contact
+                .fueConfirmado(false)
+                .localiza(true)
+                .build();
+
+        mvc.perform(MockMvcRequestBuilders
+                .put("/info-cets/" + 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(obm.writeValueAsString(payload))).andReturn();
+
+        MvcResult result = mvc.perform(MockMvcRequestBuilders
+                .get("/info-cets/show/" + 1L)).andReturn();
+
+        assertEquals(200, result.getResponse().getStatus());
+        InfoCetResponseBody infoCet = obm.readValue(result.getResponse().getContentAsString(), InfoCetResponseBody.class);
+
+        assertEquals(1, infoCet.getContatos().size());
     }
 
 }
