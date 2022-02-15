@@ -14,10 +14,8 @@ public class Cet {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nombre_archivo")
     private String nombreArchivo;
 
-    @Column(name = "fecha_proceso")
     private LocalDate fechaProceso;
 
 }

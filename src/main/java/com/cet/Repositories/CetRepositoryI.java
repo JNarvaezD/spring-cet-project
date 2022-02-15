@@ -30,16 +30,6 @@ public class CetRepositoryI implements CetRepository{
     }
 
     @Override
-    public Cet update(Cet cet) {
-        return cetCrudRepository.save(cet);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        cetCrudRepository.deleteById(id);
-    }
-
-    @Override
     public boolean findByNombreArchivo(String name) {
         return cetCrudRepository.existsByNombreArchivo(name);
     }

@@ -73,22 +73,4 @@ public class CetServiceTest {
         assertEquals(cet, cetService);
     }
 
-    @Test
-    void shouldUpdateCet() {
-        CetDto cetDto = CetDto.builder().id(2L).nombreArchivo("CET_2020-02-02_updated")
-                .fechaProceso(LocalDate.now()).build();
-
-        Cet cetUpdated = this.cets.get(1);
-        cetUpdated.setNombreArchivo(cetDto.getNombreArchivo());
-
-        when(this.cetRepository.findOne(any())).thenReturn(Optional.of(cetUpdated));
-        when(this.cetRepository.update(any())).thenReturn(cetUpdated);
-        Cet cetService = this.cetService.update(cetDto);
-
-        verify(this.cetRepository, times(1)).findOne(any());
-        assertEquals(cetService, this.cets.get(1));
-        assertEquals(cetService.getId(), 2L);
-        assertEquals(cetService.getNombreArchivo(), "CET_2020-02-02_updated");
-    }
-
 }
