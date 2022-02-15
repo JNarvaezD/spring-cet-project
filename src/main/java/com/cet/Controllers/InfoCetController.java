@@ -1,6 +1,6 @@
 package com.cet.Controllers;
 
-import com.cet.InfoCetResponseBody;
+import com.cet.ResponseClasses.InfoCetResponseBody;
 import com.cet.Models.InfoCet;
 import com.cet.Services.InfoCetService;
 import com.cet.dtos.InfoCetDto;

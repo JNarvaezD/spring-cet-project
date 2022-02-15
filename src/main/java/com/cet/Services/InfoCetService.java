@@ -1,6 +1,6 @@
 package com.cet.Services;
 
-import com.cet.InfoCetResponseBody;
+import com.cet.ResponseClasses.InfoCetResponseBody;
 import com.cet.Models.FailedInfoCet;
 import com.cet.Models.InfoCet;
 import com.cet.Repositories.FailedInfoCetRepository;

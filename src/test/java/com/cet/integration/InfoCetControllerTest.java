@@ -1,7 +1,7 @@
 package com.cet.integration;
 
 import com.cet.CetApplication;
-import com.cet.InfoCetResponseBody;
+import com.cet.ResponseClasses.InfoCetResponseBody;
 import com.cet.Models.InfoCet;
 import com.cet.dtos.InfoCetDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
