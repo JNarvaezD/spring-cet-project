@@ -38,7 +38,6 @@ public class InfoCetUtils {
 
     public static String returnNoSaleEnArchivo(List<InfoCet> contactosL, int covidContacto, boolean compartenGastos) {
         String mensaje = "";
-        System.out.println("Gente " + contactosL);
         if(covidContacto == 1 && compartenGastos && contactosL.size() == 0) {
             mensaje += "Confirmado que comparte gastos sin grupo familiar conformado";
         }
