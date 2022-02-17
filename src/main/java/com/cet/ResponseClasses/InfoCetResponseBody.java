@@ -82,22 +82,5 @@ public class InfoCetResponseBody {
 
     private List<InfoCet> contatos;
 
-    private boolean setAppends;
-
     private String mensajesSaldraEnArchivo;
-
-    private void setMensajesSaldraEnArchivo(List<InfoCet> contatosL) {
-        if(this.setAppends) {
-            if(this.compartenGastos && contatosL.size() == 0) {
-                mensajesSaldraEnArchivo.concat("Confirmado que comparte gastos sin grupo familiar conformado");
-            }
-            if(this.compartenGastos && contatosL.size() > 1 && contatosL.stream().filter(contato -> contato.getProductoFinanciero()).count() > 1) {
-                mensajesSaldraEnArchivo.concat("Hay uno o varios contactos vinculados con campos por diligenciar");
-            }
-            if(this.compartenGastos && contatosL.size() > 1 && contatosL.stream().filter(contato -> contato.getAutorizaEps() == true).count() == 1) {
-                mensajesSaldraEnArchivo.concat("Grupo familiar conformado sin persona autorizada para pago de CET");
-            }
-        }
-    }
-
 }

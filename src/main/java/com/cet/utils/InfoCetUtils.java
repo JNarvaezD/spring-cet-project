@@ -1,5 +1,8 @@
 package com.cet.utils;
 
+import com.cet.Models.InfoCet;
+
+import java.util.List;
 import java.util.Objects;
 
 public class InfoCetUtils {
@@ -31,6 +34,25 @@ public class InfoCetUtils {
     public static void restartAttributes() {
         covidContacto = null;
         fueConfirmado = null;
+    }
+
+    public static String returnNoSaleEnArchivo(List<InfoCet> contactosL, int covidContacto, boolean compartenGastos) {
+        String mensaje = "";
+        System.out.println("Gente " + contactosL);
+        if(covidContacto == 1 && compartenGastos && contactosL.size() == 0) {
+            mensaje += "Confirmado que comparte gastos sin grupo familiar conformado";
+        }
+
+        if(covidContacto == 1 && contactosL.size() > 0) {
+            if(compartenGastos && contactosL.size() > 1 && contactosL.stream().filter(InfoCet::getProductoFinanciero).count() > 1) {
+                mensaje += "Hay uno o varios contactos vinculados con campos por diligenciar";
+            }
+            if(compartenGastos && contactosL.size() > 1 && contactosL.stream().filter(InfoCet::getAutorizaEps).count() == 1) {
+                mensaje += "Grupo familiar conformado sin persona autorizada para pago de CET";
+            }
+        }
+
+        return mensaje;
     }
 
 }

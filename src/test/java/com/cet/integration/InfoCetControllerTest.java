@@ -349,12 +349,14 @@ class InfoCetControllerTest {
         MvcResult getContacto = mvc.perform(MockMvcRequestBuilders
                 .get("/info-cets/" + 2L)).andReturn();
 
-        assertEquals(200, getContacto.getResponse().getStatus());
+        MvcResult getConfirmado = mvc.perform(MockMvcRequestBuilders
+                .get("/info-cets/" + 1L)).andReturn();
 
         InfoCet contacto = obm.readValue(getContacto.getResponse().getContentAsString(), InfoCet.class);
+        InfoCet confirmado = obm.readValue(getConfirmado.getResponse().getContentAsString(), InfoCet.class);
         assertEquals(2, contacto.getId());
 
-        InfoCetDto payload = InfoCetDto.builder().id(contacto.getId())
+        InfoCetDto payloadContacto = InfoCetDto.builder().id(contacto.getId())
                 .numeroCaso(contacto.getNumeroCaso())
                 .fechaDiagnostico(contacto.getFechaDiagnostico())
                 .bduaAfiliadoId(contacto.getBduaAfiliadoId())
@@ -390,10 +392,51 @@ class InfoCetControllerTest {
                 .localiza(true)
                 .build();
 
+        InfoCetDto payloadConfirmado = InfoCetDto.builder().id(confirmado.getId())
+                .numeroCaso(confirmado.getNumeroCaso())
+                .fechaDiagnostico(confirmado.getFechaDiagnostico())
+                .bduaAfiliadoId(confirmado.getBduaAfiliadoId())
+                .tipoId(confirmado.getTipoId())
+                .identificacion(confirmado.getIdentificacion())
+                .nombre1(confirmado.getNombre1())
+                .nombre2(confirmado.getNombre2())
+                .apellido1(confirmado.getApellido1())
+                .apellido2(confirmado.getApellido2())
+                .fechaNacimiento(confirmado.getFechaNacimiento())
+                .sexo(confirmado.getSexo())
+                .codEps(confirmado.getCodEps())
+                .telefonoFijo(confirmado.getTelefonoFijo())
+                .celular(confirmado.getCelular())
+                .covidContacto(confirmado.getCovidContacto())
+                .cet(confirmado.getCetId())
+                .productoFinanciero(false)
+                .entidadFinancieraId(null)
+                .giroAFamiliar(true)
+                .fallecido(false)
+                .fechaExpedicion(LocalDate.of(2017, 8, 19))
+                .email("prueba@mail.com")
+                .direccion("Calle imaginaria #45-54")
+                .codigoDepartamento("01")
+                .codigoMunicipio("234")
+                //here goes the link values
+                .cumpleAislamiento(true)
+                .autorizaEps(true)
+                .parentescoId(2)
+                .compartenGastos(true)
+                //reason of no contact
+                .fueConfirmado(false)
+                .localiza(true)
+                .build();
+
         mvc.perform(MockMvcRequestBuilders
-                .put("/info-cets/" + 1L)
+                .put("/info-cets/" + payloadConfirmado.getId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(obm.writeValueAsString(payload))).andReturn();
+                .content(obm.writeValueAsString(payloadContacto))).andReturn();
+
+        mvc.perform(MockMvcRequestBuilders
+                .put("/info-cets/" + payloadConfirmado.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(obm.writeValueAsString(payloadConfirmado))).andReturn();
 
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                 .get("/info-cets/show/" + 1L)).andReturn();
@@ -401,7 +444,7 @@ class InfoCetControllerTest {
         assertEquals(200, result.getResponse().getStatus());
         InfoCetResponseBody infoCet = obm.readValue(result.getResponse().getContentAsString(), InfoCetResponseBody.class);
 
-        assertEquals(1, infoCet.getContatos().size());
+        assertEquals(2, infoCet.getContatos().size());
     }
 
 }

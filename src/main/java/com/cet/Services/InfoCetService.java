@@ -14,7 +14,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class InfoCetService {
@@ -37,9 +36,7 @@ public class InfoCetService {
         Optional<InfoCet> confirmado = findOne(id);
         if(confirmado.isPresent()) {
             InfoCet cabezaHogar = confirmado.get();
-            List<InfoCet> contactos = infoCetRepository.findContactos(cabezaHogar.getTipoId(), cabezaHogar.getIdentificacion())
-                    .stream().filter(contacto -> contacto.getCovidContacto() == 2)
-                    .collect(Collectors.toList());
+            List<InfoCet> contactos = infoCetRepository.findContactos(cabezaHogar.getTipoId(), cabezaHogar.getIdentificacion());
 
             return InfoCetResponseBody.builder().id(cabezaHogar.getId())
                     .numeroCaso(cabezaHogar.getNumeroCaso())
