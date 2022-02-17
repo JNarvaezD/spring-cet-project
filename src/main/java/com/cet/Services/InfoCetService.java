@@ -153,7 +153,7 @@ public class InfoCetService {
         return infoCetRepository.findOne(idConfirmado).get();
     }
 
-    public InfoCet vincularContacto(Long idContacto, Long idConfirmado) {
+    public InfoCet linkOrUnlinkContacto(Long idContacto, Long idConfirmado) {
         Optional<InfoCet> getConfirmado = infoCetRepository.findOne(idConfirmado);
         Optional<InfoCet> getContacto = infoCetRepository.findOne(idContacto);
 

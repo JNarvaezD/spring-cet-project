@@ -122,12 +122,11 @@ public class InfoCetServiceTest {
 
         when(infoCetRepository.findOne(anyLong())).thenReturn(Optional.of(infoCetEntity));
 
-        InfoCet infoCetUpdated = infoCetPayload;
-        infoCetUpdated.setTipoidAfConfirmado(infoCetEntity.getTipoId());
-        infoCetUpdated.setIdentificacionAfConfirmado(infoCetEntity.getIdentificacion());
-        infoCetUpdated.setIdBduaAfConfirmado(infoCetEntity.getBduaAfiliadoId());
+        infoCetPayload.setTipoidAfConfirmado(infoCetEntity.getTipoId());
+        infoCetPayload.setIdentificacionAfConfirmado(infoCetEntity.getIdentificacion());
+        infoCetPayload.setIdBduaAfConfirmado(infoCetEntity.getBduaAfiliadoId());
 
-        when(infoCetRepository.update(any())).thenReturn(infoCetUpdated);
+        when(infoCetRepository.update(any())).thenReturn(infoCetPayload);
         InfoCet responseService = infoCetService.update(infoCetPayload.getId(), infoCetDto);
 
         verify(infoCetRepository, times(2)).findOne(anyLong());
