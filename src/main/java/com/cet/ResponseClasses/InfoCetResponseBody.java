@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Builder @Data
 public class InfoCetResponseBody {
@@ -13,6 +14,8 @@ public class InfoCetResponseBody {
     private Long id;
 
     private String numeroCaso;
+
+    private String nombreCompleto;
 
     private LocalDate fechaDiagnostico;
 
@@ -83,4 +86,19 @@ public class InfoCetResponseBody {
     private List<InfoCet> contatos;
 
     private String mensajesSaldraEnArchivo;
+
+    public void setNombreCompleto(String nombre1, String nombre2, String apellido1, String apellido2) {
+        StringBuilder nombreCompleto = new StringBuilder();
+
+        nombreCompleto.append(nombre1);
+        if(!Objects.isNull(nombre2)) {
+            nombreCompleto.append(" ").append(nombre2);
+        }
+
+        nombreCompleto.append(" ").append(apellido1);
+        if(!apellido2.isEmpty()) {
+            nombreCompleto.append(" ").append(apellido2);
+        }
+        this.nombreCompleto = nombreCompleto.toString();
+    }
 }

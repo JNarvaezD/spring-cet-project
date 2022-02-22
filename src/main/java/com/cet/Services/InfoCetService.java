@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -37,8 +38,7 @@ public class InfoCetService {
         if(confirmado.isPresent()) {
             InfoCet cabezaHogar = confirmado.get();
             List<InfoCet> contactos = infoCetRepository.findContactos(cabezaHogar.getTipoId(), cabezaHogar.getIdentificacion());
-
-            return InfoCetResponseBody.builder().id(cabezaHogar.getId())
+            InfoCetResponseBody response = InfoCetResponseBody.builder().id(cabezaHogar.getId())
                     .numeroCaso(cabezaHogar.getNumeroCaso())
                     .fechaDiagnostico(cabezaHogar.getFechaDiagnostico())
                     .bduaAfiliadoId(cabezaHogar.getBduaAfiliadoId())
@@ -75,6 +75,9 @@ public class InfoCetService {
                     .cetId(cabezaHogar.getCetId())
                     .contatos(contactos)
                     .build();
+
+            response.setNombreCompleto(cabezaHogar.getNombre1(), cabezaHogar.getNombre2(), cabezaHogar.getApellido1(), cabezaHogar.getApellido2());
+            return response;
         }
         throw new NoSuchElementException();
     }
