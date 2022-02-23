@@ -91,14 +91,10 @@ public class InfoCetResponseBody {
         StringBuilder nombreCompleto = new StringBuilder();
 
         nombreCompleto.append(nombre1);
-        if(!Objects.isNull(nombre2)) {
-            nombreCompleto.append(" ").append(nombre2);
-        }
+        if(!Objects.isNull(nombre2)) { nombreCompleto.append(" ").append(nombre2); }
 
         nombreCompleto.append(" ").append(apellido1);
-        if(!apellido2.isEmpty()) {
-            nombreCompleto.append(" ").append(apellido2);
-        }
+        if(!apellido2.isEmpty()) { nombreCompleto.append(" ").append(apellido2); }
         this.nombreCompleto = nombreCompleto.toString();
     }
 }
