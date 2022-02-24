@@ -59,7 +59,7 @@ public class InfoCet {
 
     private Integer entidadFinancieraId;
 
-    @Column(columnDefinition = "TINYINT(1)")
+    @Column(columnDefinition = "TINYINT(1)", name = "giro_a_familiar")
     private Boolean giroAFamiliar;
 
     private String telefonoFijo;
