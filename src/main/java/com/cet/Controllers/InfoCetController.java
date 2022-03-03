@@ -20,21 +20,21 @@ public class InfoCetController {
     private InfoCetService infoCetService;
 
     @GetMapping
-    public ResponseEntity<List<InfoCet>> get() {
+    public ResponseEntity<List<InfoCet>> findAll() {
         return new ResponseEntity<>(infoCetService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findOne(@PathVariable("id") Long id) {
+    public ResponseEntity<?> find(@PathVariable("id") Long id) {
         Optional<InfoCet> infoCet = infoCetService.findOne(id);
         if(infoCet.isPresent()) {
             return new ResponseEntity<>(infoCet.get(), HttpStatus.OK);
         }
-        return new ResponseEntity<>("El registro con id " + id + " no ha sido encontrado", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Record with id " + id + " has not been found", HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/show/{id}")
-    public ResponseEntity<InfoCetResponseBody> showOne(@PathVariable("id") Long id) {
+    @GetMapping("/family-group/{id}")
+    public ResponseEntity<InfoCetResponseBody> show(@PathVariable("id") Long id) {
         return new ResponseEntity<>(infoCetService.show(id), HttpStatus.OK);
     }
 
@@ -47,9 +47,9 @@ public class InfoCetController {
     public ResponseEntity<String> delete(@PathVariable("id") Long id) {
         boolean rowDeleted = infoCetService.delete(id);
         if(rowDeleted) {
-            return new ResponseEntity<>("Registro eliminado con exito", HttpStatus.OK);
+            return new ResponseEntity<>("Record has been deleted", HttpStatus.OK);
         }
-        return new ResponseEntity<>("El registro con id " + id + " no ha sido encontrado", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Record with id " + id + " has not been found", HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/contacto/{idContacto}/confirmado/{idConfirmado}")

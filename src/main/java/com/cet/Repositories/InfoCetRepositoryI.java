@@ -50,7 +50,7 @@ public class InfoCetRepositoryI implements InfoCetRepository{
     }
 
     @Override
-    public List<InfoCet> findContactos(String tipoId, String identificacion) {
+    public List<InfoCet> findFamilyGroup(String tipoId, String identificacion) {
         return infoCetCrudRepository.findAllByTipoidAfConfirmadoAndIdentificacionAfConfirmado(tipoId, identificacion);
     }
 

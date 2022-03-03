@@ -36,44 +36,22 @@ public class InfoCetService {
         Optional<InfoCet> confirmado = findOne(id);
         if(confirmado.isPresent()) {
             InfoCet cabezaHogar = confirmado.get();
-            List<InfoCet> contactos = infoCetRepository.findContactos(cabezaHogar.getTipoId(), cabezaHogar.getIdentificacion());
+            List<InfoCet> familyGroup = infoCetRepository.findFamilyGroup(cabezaHogar.getTipoId(), cabezaHogar.getIdentificacion());
             InfoCetResponseBody response = InfoCetResponseBody.builder().id(cabezaHogar.getId())
-                    .numeroCaso(cabezaHogar.getNumeroCaso())
-                    .fechaDiagnostico(cabezaHogar.getFechaDiagnostico())
-                    .bduaAfiliadoId(cabezaHogar.getBduaAfiliadoId())
-                    .tipoId(cabezaHogar.getTipoId())
-                    .identificacion(cabezaHogar.getIdentificacion())
-                    .nombre1(cabezaHogar.getNombre1())
-                    .nombre2(cabezaHogar.getNombre2())
-                    .apellido1(cabezaHogar.getApellido1())
-                    .apellido2(cabezaHogar.getApellido2())
-                    .fechaNacimiento(cabezaHogar.getFechaNacimiento())
-                    .sexo(cabezaHogar.getSexo())
-                    .fallecido(cabezaHogar.getFallecido())
-                    .codEps(cabezaHogar.getCodEps())
-                    .productoFinanciero(cabezaHogar.getProductoFinanciero())
-                    .entidadFinancieraId(cabezaHogar.getEntidadFinancieraId())
-                    .giroAFamiliar(cabezaHogar.getGiroAFamiliar())
-                    .telefonoFijo(cabezaHogar.getTelefonoFijo())
-                    .celular(cabezaHogar.getCelular())
-                    .fechaExpedicion(cabezaHogar.getFechaExpedicion())
-                    .email(cabezaHogar.getEmail())
-                    .direccion(cabezaHogar.getDireccion())
-                    .codigoDepartamento(cabezaHogar.getCodigoDepartamento())
-                    .codigoMunicipio(cabezaHogar.getCodigoMunicipio())
-                    .idBduaAfConfirmado(cabezaHogar.getIdBduaAfConfirmado())
-                    .tipoidAfConfirmado(cabezaHogar.getTipoidAfConfirmado())
-                    .identificacionAfConfirmado(cabezaHogar.getIdentificacionAfConfirmado())
-                    .cumpleAislamiento(cabezaHogar.getCumpleAislamiento())
-                    .autorizaEps(cabezaHogar.getAutorizaEps())
-                    .covidContacto(cabezaHogar.getCovidContacto())
-                    .parentescoId(cabezaHogar.getParentescoId())
-                    .compartenGastos(cabezaHogar.getCompartenGastos())
-                    .fueConfirmado(cabezaHogar.getFueConfirmado())
-                    .noEfectividad(cabezaHogar.getNoEfectividad())
-                    .cetId(cabezaHogar.getCetId())
-                    .contatos(contactos)
-                    .build();
+                    .numeroCaso(cabezaHogar.getNumeroCaso()).fechaDiagnostico(cabezaHogar.getFechaDiagnostico())
+                    .bduaAfiliadoId(cabezaHogar.getBduaAfiliadoId()).tipoId(cabezaHogar.getTipoId())
+                    .identificacion(cabezaHogar.getIdentificacion()).nombre1(cabezaHogar.getNombre1())
+                    .nombre2(cabezaHogar.getNombre2()).apellido1(cabezaHogar.getApellido1()).apellido2(cabezaHogar.getApellido2())
+                    .fechaNacimiento(cabezaHogar.getFechaNacimiento()).sexo(cabezaHogar.getSexo()).fallecido(cabezaHogar.getFallecido())
+                    .codEps(cabezaHogar.getCodEps()).productoFinanciero(cabezaHogar.getProductoFinanciero()).entidadFinancieraId(cabezaHogar.getEntidadFinancieraId())
+                    .giroAFamiliar(cabezaHogar.getGiroAFamiliar()).telefonoFijo(cabezaHogar.getTelefonoFijo()).celular(cabezaHogar.getCelular())
+                    .fechaExpedicion(cabezaHogar.getFechaExpedicion()).email(cabezaHogar.getEmail()).direccion(cabezaHogar.getDireccion())
+                    .codigoDepartamento(cabezaHogar.getCodigoDepartamento()).codigoMunicipio(cabezaHogar.getCodigoMunicipio())
+                    .idBduaAfConfirmado(cabezaHogar.getIdBduaAfConfirmado()).tipoidAfConfirmado(cabezaHogar.getTipoidAfConfirmado())
+                    .identificacionAfConfirmado(cabezaHogar.getIdentificacionAfConfirmado()).cumpleAislamiento(cabezaHogar.getCumpleAislamiento())
+                    .autorizaEps(cabezaHogar.getAutorizaEps()).covidContacto(cabezaHogar.getCovidContacto()).parentescoId(cabezaHogar.getParentescoId())
+                    .compartenGastos(cabezaHogar.getCompartenGastos()).fueConfirmado(cabezaHogar.getFueConfirmado()).noEfectividad(cabezaHogar.getNoEfectividad())
+                    .cetId(cabezaHogar.getCetId()).contatos(familyGroup).build();
 
             response.setNombreCompleto(cabezaHogar.getNombre1(), cabezaHogar.getNombre2(), cabezaHogar.getApellido1(), cabezaHogar.getApellido2());
             return response;
@@ -88,47 +66,25 @@ public class InfoCetService {
         }
 
         InfoCet infoCet = InfoCet.builder()
-                .id(infoCetDto.getId())
-                .numeroCaso(infoCetDto.getNumeroCaso())
-                .fechaDiagnostico(infoCetDto.getFechaDiagnostico())
-                .bduaAfiliadoId(infoCetDto.getBduaAfiliadoId())
-                .tipoId(infoCetDto.getTipoId())
-                .identificacion(infoCetDto.getIdentificacion())
-                .nombre1(infoCetDto.getNombre1())
-                .nombre2(infoCetDto.getNombre2())
-                .apellido1(infoCetDto.getApellido1())
-                .apellido2(infoCetDto.getApellido2())
-                .fechaNacimiento(infoCetDto.getFechaNacimiento())
-                .sexo(infoCetDto.getSexo())
-                .codEps(infoCetDto.getCodEps())
-                .fallecido(infoCetDto.getFallecido())
-                .productoFinanciero(infoCetDto.getProductoFinanciero())
-                .entidadFinancieraId(infoCetDto.getEntidadFinancieraId())
-                .giroAFamiliar(infoCetDto.getGiroAFamiliar())
-                .telefonoFijo(infoCetDto.getTelefonoFijo())
-                .celular(infoCetDto.getCelular())
-                .fechaExpedicion(infoCetDto.getFechaExpedicion())
-                .email(infoCetDto.getEmail())
-                .direccion(infoCetDto.getDireccion())
-                .codigoDepartamento(infoCetDto.getCodigoDepartamento())
-                .codigoMunicipio(infoCetDto.getCodigoMunicipio())
-                .cumpleAislamiento(infoCetDto.getCumpleAislamiento())
-                .autorizaEps(infoCetDto.getAutorizaEps())
-                .parentescoId(infoCetDto.getParentescoId())
-                .compartenGastos(infoCetDto.getCompartenGastos())
-                .cetId(infoCetDto.getCet())
-                .covidContacto(infoCetDto.getCovidContacto())
-                .fueConfirmado(infoCetDto.getFueConfirmado())
-                .noEfectividad(infoCetDto.getNoEfectividad())
-                .build();
+                .id(infoCetDto.getId()).numeroCaso(infoCetDto.getNumeroCaso())
+                .fechaDiagnostico(infoCetDto.getFechaDiagnostico()).bduaAfiliadoId(infoCetDto.getBduaAfiliadoId())
+                .tipoId(infoCetDto.getTipoId()).identificacion(infoCetDto.getIdentificacion())
+                .nombre1(infoCetDto.getNombre1()).nombre2(infoCetDto.getNombre2()).apellido1(infoCetDto.getApellido1())
+                .apellido2(infoCetDto.getApellido2()).fechaNacimiento(infoCetDto.getFechaNacimiento()).sexo(infoCetDto.getSexo())
+                .codEps(infoCetDto.getCodEps()).fallecido(infoCetDto.getFallecido()).productoFinanciero(infoCetDto.getProductoFinanciero())
+                .entidadFinancieraId(infoCetDto.getEntidadFinancieraId()).giroAFamiliar(infoCetDto.getGiroAFamiliar())
+                .telefonoFijo(infoCetDto.getTelefonoFijo()).celular(infoCetDto.getCelular()).fechaExpedicion(infoCetDto.getFechaExpedicion())
+                .email(infoCetDto.getEmail()).direccion(infoCetDto.getDireccion()).codigoDepartamento(infoCetDto.getCodigoDepartamento())
+                .codigoMunicipio(infoCetDto.getCodigoMunicipio()).cumpleAislamiento(infoCetDto.getCumpleAislamiento()).autorizaEps(infoCetDto.getAutorizaEps())
+                .parentescoId(infoCetDto.getParentescoId()).compartenGastos(infoCetDto.getCompartenGastos()).cetId(infoCetDto.getCet())
+                .covidContacto(infoCetDto.getCovidContacto()).fueConfirmado(infoCetDto.getFueConfirmado())
+                .noEfectividad(infoCetDto.getNoEfectividad()).build();
 
         if(infoCetDto.getLocaliza()) {
             infoCet.setNoEfectividad(infoCetDto.getNoEfectividad());
             InfoCetUtils.setCovidContactoAndFueConfirmado(
-                    infoCet.getCovidContacto(),
-                    infoCet.getFueConfirmado(),
-                    idConfirmado,
-                    infoCet.getId()
+                    infoCet.getCovidContacto(), infoCet.getFueConfirmado(),
+                    idConfirmado, infoCet.getId()
             );
 
             Optional<InfoCet> cabezaFamiliar = infoCetRepository.findOne(idConfirmado);
@@ -176,7 +132,6 @@ public class InfoCetService {
                 contacto.setIdBduaAfConfirmado(confirmado.getBduaAfiliadoId());
                 contacto.setTipoidAfConfirmado(confirmado.getTipoId());
                 contacto.setIdentificacionAfConfirmado(confirmado.getIdentificacion());
-                infoCetRepository.save(contacto);
             } else {
                 contacto.setCovidContacto(InfoCetUtils.getCovidContacto());
                 contacto.setFueConfirmado(InfoCetUtils.getFueConfirmado());
@@ -189,10 +144,12 @@ public class InfoCetService {
                 contacto.setAutorizaEps(null);
                 contacto.setParentescoId(null);
                 contacto.setCompartenGastos(null);
-                infoCetRepository.save(contacto);
             }
+
+            infoCetRepository.save(contacto);
             return confirmado;
         }
+
         throw new NoSuchElementException();
     }
 

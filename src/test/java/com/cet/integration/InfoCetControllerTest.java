@@ -436,7 +436,7 @@ class InfoCetControllerTest {
                 .content(obm.writeValueAsString(payloadConfirmado))).andReturn();
 
         MvcResult result = mvc.perform(MockMvcRequestBuilders
-                .get("/info-cets/show/" + 1L)).andReturn();
+                .get("/info-cets/family-group/" + 1L)).andReturn();
 
         assertEquals(200, result.getResponse().getStatus());
         InfoCetResponseBody infoCet = obm.readValue(result.getResponse().getContentAsString(), InfoCetResponseBody.class);
