@@ -35,7 +35,7 @@ class CetControllerTest {
                 content.getBytes()
         );
 
-        MvcResult result = mockMvc.perform(multipart("/cets/upload-data").file(file)).andReturn();
+        MvcResult result = mockMvc.perform(multipart("/cets/upload-file").file(file)).andReturn();
         assertEquals(201, result.getResponse().getStatus());
     }
 
@@ -50,7 +50,7 @@ class CetControllerTest {
                 content.getBytes()
         );
 
-        MvcResult result = mockMvc.perform(multipart("/cets/upload-data").file(file)).andReturn();
+        MvcResult result = mockMvc.perform(multipart("/cets/upload-file").file(file)).andReturn();
         assertEquals(422, result.getResponse().getStatus());
     }
 
@@ -65,12 +65,12 @@ class CetControllerTest {
                 content.getBytes()
         );
 
-        MvcResult result = mockMvc.perform(multipart("/cets/upload-data").file(file)).andReturn();
+        MvcResult result = mockMvc.perform(multipart("/cets/upload-file").file(file)).andReturn();
         assertEquals(204, result.getResponse().getStatus());
     }
 
     @Test
-    void givenFileWithTwoDelimitersShouldThrowException() throws Exception {
+    void givenFileWithTwoDifferentDelimitersShouldThrowException() throws Exception {
         Path getFile = Paths.get("C:\\Users\\susje\\Downloads\\files\\CCF033COVID15012021ONEROWTWODELIMITERS.TXT");
         String content = Files.readString(getFile, StandardCharsets.ISO_8859_1);
         MockMultipartFile file = new MockMultipartFile(
@@ -81,7 +81,7 @@ class CetControllerTest {
         );
 
         Exception exception = assertThrows(Exception.class, () ->
-                mockMvc.perform(multipart("/cets/upload-data").file(file)).andReturn()
+                mockMvc.perform(multipart("/cets/upload-file").file(file)).andReturn()
         );
         assertEquals(
                 "More than one delimiters were found in the file",
@@ -101,7 +101,7 @@ class CetControllerTest {
         );
 
         Exception exception = assertThrows(Exception.class, () ->
-                mockMvc.perform(multipart("/cets/upload-data").file(file)).andReturn()
+                mockMvc.perform(multipart("/cets/upload-file").file(file)).andReturn()
         );
 
         assertEquals("File is not separated with the allowed delimiters", exception.getMessage().substring(exception.getMessage().indexOf(": ") + 2));

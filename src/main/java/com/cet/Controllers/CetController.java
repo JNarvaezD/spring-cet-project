@@ -13,7 +13,7 @@ public class CetController {
     @Autowired
     private CetService cetService;
 
-    @PostMapping("/upload-data")
+    @PostMapping("/upload-file")
     public ResponseEntity<String> uploadData(@RequestParam("file") MultipartFile file) throws Exception {
         return new ResponseEntity<>(cetService.uploadData(file), HttpStatus.CREATED);
     }

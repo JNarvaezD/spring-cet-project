@@ -15,25 +15,24 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = CetApplication.class)
 @AutoConfigureMockMvc
 class InfoCetControllerTest {
 
     @Autowired
-    private MockMvc mvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    private ObjectMapper obm;
+    private ObjectMapper objectMapper;
 
     @Test
     void firstActivityToRun() throws Exception {
@@ -46,51 +45,47 @@ class InfoCetControllerTest {
                 content.getBytes()
         );
 
-        MvcResult result = mvc.perform(multipart("/cets/upload-data").file(file)).andReturn();
-        assertEquals(201, result.getResponse().getStatus());
+        mockMvc.perform(multipart("/cets/upload-file").file(file))
+                .andExpect(status().isCreated())
+                .andReturn();
     }
 
     @Test
     void getData() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders.get("/info-cets");
-        MvcResult result = mvc.perform(request).andReturn();
-        assertEquals(200, result.getResponse().getStatus());
+        mockMvc.perform(request).andExpect(status().isOk()).andReturn();
     }
 
     @Test
     void givenIdShouldReturnThatId() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders.get("/info-cets/" + 1L);
-        MvcResult result = mvc.perform(request).andReturn();
-        assertEquals(200, result.getResponse().getStatus());
+        mockMvc.perform(request).andExpect(status().isOk()).andReturn();
     }
 
     @Test
     void givenNotValidIdShouldReturn404() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders.get("/info-cets/" + 999);
-        MvcResult result = mvc.perform(request).andReturn();
-        assertEquals(404, result.getResponse().getStatus());
+        mockMvc.perform(request).andExpect(status().isNotFound()).andReturn();
     }
 
     @Test
     void givenNotValidIdShouldNotDeleteAndReturn404() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders.delete("/info-cets/" + 999);
-        MvcResult result = mvc.perform(request).andReturn();
-        assertEquals(404, result.getResponse().getStatus());
+        mockMvc.perform(request).andExpect(status().isNotFound()).andReturn();
     }
 
     @Test
     void givenIdShouldDeleteThatId() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders.delete("/info-cets/" + 200);
-        MvcResult result = mvc.perform(request).andReturn();
-        assertEquals(200, result.getResponse().getStatus());
+        mockMvc.perform(request).andExpect(status().isOk()).andReturn();
     }
 
     @Test
     void givenIdShouldUpdateThatId() throws Exception {
-        MvcResult getConfirmado = mvc.perform(MockMvcRequestBuilders.get("/info-cets/" + 1L)).andReturn();
-        assertEquals(200, getConfirmado.getResponse().getStatus());
+        MvcResult getConfirmado = mockMvc.perform(MockMvcRequestBuilders.get("/info-cets/" + 1L))
+                .andExpect(status().isOk()).andReturn();
 
-        InfoCet confirmado = obm.readValue(getConfirmado.getResponse().getContentAsString(), InfoCet.class);
+        InfoCet confirmado = objectMapper.readValue(getConfirmado.getResponse().getContentAsString(), InfoCet.class);
         InfoCetDto payload = InfoCetDto.builder().id(confirmado.getId())
                 .numeroCaso(confirmado.getNumeroCaso())
                 .fechaDiagnostico(confirmado.getFechaDiagnostico())
@@ -126,15 +121,15 @@ class InfoCetControllerTest {
                 .localiza(true)
                 .build();
 
-        MvcResult updating = mvc.perform(MockMvcRequestBuilders
+        MvcResult updating = mockMvc.perform(MockMvcRequestBuilders
                 .put("/info-cets/" + confirmado.getId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(obm.writeValueAsString(payload)))
+                .content(objectMapper.writeValueAsString(payload)))
+                .andExpect(status().isOk())
                 .andReturn();
 
-        InfoCet response = obm.readValue(updating.getResponse().getContentAsString(), InfoCet.class);
+        InfoCet response = objectMapper.readValue(updating.getResponse().getContentAsString(), InfoCet.class);
 
-        assertEquals(200, updating.getResponse().getStatus());
         assertEquals(confirmado.getBduaAfiliadoId(), response.getIdBduaAfConfirmado());
         assertEquals(confirmado.getTipoId(), response.getTipoidAfConfirmado());
         assertEquals(confirmado.getIdentificacion(), response.getIdentificacionAfConfirmado());
@@ -145,10 +140,10 @@ class InfoCetControllerTest {
 
     @Test
     void updateAndLinkContactoWithConfirmado() throws Exception {
-        MvcResult getContacto = mvc.perform(MockMvcRequestBuilders.get("/info-cets/" + 2L)).andReturn();
-        assertEquals(200, getContacto.getResponse().getStatus());
+        MvcResult getContacto = mockMvc.perform(MockMvcRequestBuilders.get("/info-cets/" + 2L))
+                .andExpect(status().isOk()).andReturn();
 
-        InfoCet contacto = obm.readValue(getContacto.getResponse().getContentAsString(), InfoCet.class);
+        InfoCet contacto = objectMapper.readValue(getContacto.getResponse().getContentAsString(), InfoCet.class);
         assertEquals(2, contacto.getId());
 
         InfoCetDto payload = InfoCetDto.builder().id(contacto.getId())
@@ -186,18 +181,18 @@ class InfoCetControllerTest {
                 .build();
 
         //In this line, the payload of the contact is sent with the ID of the confirmed user so that the contact will be linked with the confirmed user
-        MvcResult update = mvc.perform(MockMvcRequestBuilders
+        MvcResult update = mockMvc.perform(MockMvcRequestBuilders
                 .put("/info-cets/" + 1L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(obm.writeValueAsString(payload)))
+                .content(objectMapper.writeValueAsString(payload)))
+                .andExpect(status().isOk())
                 .andReturn();
 
-        MvcResult getContactoAlreadyLinked = mvc.perform(MockMvcRequestBuilders.get("/info-cets/" + 2L)).andReturn();
+        MvcResult getContactoAlreadyLinked = mockMvc.perform(MockMvcRequestBuilders.get("/info-cets/" + 2L)).andReturn();
 
-        InfoCet confirmado = obm.readValue(update.getResponse().getContentAsString(), InfoCet.class);
-        InfoCet contactoAlreadyLinked = obm.readValue(getContactoAlreadyLinked.getResponse().getContentAsString(), InfoCet.class);
+        InfoCet confirmado = objectMapper.readValue(update.getResponse().getContentAsString(), InfoCet.class);
+        InfoCet contactoAlreadyLinked = objectMapper.readValue(getContactoAlreadyLinked.getResponse().getContentAsString(), InfoCet.class);
 
-        assertEquals(200, update.getResponse().getStatus());
         assertEquals("2017-08-19", contactoAlreadyLinked.getFechaExpedicion().toString());
         assertTrue(contactoAlreadyLinked.getFueConfirmado());
         assertEquals(2, contactoAlreadyLinked.getCovidContacto());
@@ -208,10 +203,10 @@ class InfoCetControllerTest {
 
     @Test
     void updateAndLinkContactoWithConfirmadoHasFinishedNowShouldUnlinkContactoFromConfirmado() throws Exception {
-        MvcResult getContacto = mvc.perform(MockMvcRequestBuilders.get("/info-cets/" + 2L)).andReturn();
-        assertEquals(200, getContacto.getResponse().getStatus());
+        MvcResult getContacto = mockMvc.perform(MockMvcRequestBuilders.get("/info-cets/" + 2L))
+                .andExpect(status().isOk()).andReturn();
 
-        InfoCet contacto = obm.readValue(getContacto.getResponse().getContentAsString(), InfoCet.class);
+        InfoCet contacto = objectMapper.readValue(getContacto.getResponse().getContentAsString(), InfoCet.class);
         assertEquals(2, contacto.getId());
 
         InfoCetDto payload = InfoCetDto.builder().id(contacto.getId())
@@ -248,20 +243,21 @@ class InfoCetControllerTest {
                 .localiza(true)
                 .build();
 
-        mvc.perform(MockMvcRequestBuilders
+        mockMvc.perform(MockMvcRequestBuilders
                 .put("/info-cets/" + 1L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(obm.writeValueAsString(payload)))
+                .content(objectMapper.writeValueAsString(payload)))
+                .andExpect(status().isOk())
                 .andReturn();
 
 
-        MvcResult update = mvc.perform(MockMvcRequestBuilders.put("/info-cets/contacto/" + 2L + "/confirmado/" + 1L)).andReturn();
-        assertEquals(200, update.getResponse().getStatus());
+        mockMvc.perform(MockMvcRequestBuilders.put("/info-cets/contacto/" + 2L + "/confirmado/" + 1L))
+                .andExpect(status().isOk()).andReturn();
 
-        MvcResult findContacto = mvc.perform(MockMvcRequestBuilders.get("/info-cets/" + 2L)).andReturn();
-        assertEquals(200, findContacto.getResponse().getStatus());
+        MvcResult findContacto = mockMvc.perform(MockMvcRequestBuilders.get("/info-cets/" + 2L))
+                .andExpect(status().isOk()).andReturn();
 
-        InfoCet contactoUnlinked = obm.readValue(findContacto.getResponse().getContentAsString(), InfoCet.class);
+        InfoCet contactoUnlinked = objectMapper.readValue(findContacto.getResponse().getContentAsString(), InfoCet.class);
 
         assertFalse(contactoUnlinked.getFueConfirmado());
         assertEquals(2, contactoUnlinked.getCovidContacto());
@@ -274,10 +270,10 @@ class InfoCetControllerTest {
         assertNull(contactoUnlinked.getAutorizaEps());
         assertNull(contactoUnlinked.getParentescoId());
 
-        MvcResult findConfirmado = mvc.perform(MockMvcRequestBuilders.get("/info-cets/" + 1L)).andReturn();
-        assertEquals(200, findConfirmado.getResponse().getStatus());
+        MvcResult findConfirmado = mockMvc.perform(MockMvcRequestBuilders.get("/info-cets/" + 1L))
+                .andExpect(status().isOk()).andReturn();
 
-        InfoCet confirmado = obm.readValue(findConfirmado.getResponse().getContentAsString(), InfoCet.class);
+        InfoCet confirmado = objectMapper.readValue(findConfirmado.getResponse().getContentAsString(), InfoCet.class);
 
         assertNotNull(confirmado.getIdBduaAfConfirmado());
         assertNotNull(confirmado.getTipoidAfConfirmado());
@@ -291,10 +287,10 @@ class InfoCetControllerTest {
 
     @Test
     void updatingConfirmadoNotAvaliableShouldCreateFailedInfoCet() throws Exception {
-        MvcResult getConfirmado = mvc.perform(MockMvcRequestBuilders.get("/info-cets/" + 3L)).andReturn();
+        MvcResult getConfirmado = mockMvc.perform(MockMvcRequestBuilders.get("/info-cets/" + 3L))
+                .andExpect(status().isOk()).andReturn();
 
-        assertEquals(200, getConfirmado.getResponse().getStatus());
-        InfoCet confirmado = obm.readValue(getConfirmado.getResponse().getContentAsString(), InfoCet.class);
+        InfoCet confirmado = objectMapper.readValue(getConfirmado.getResponse().getContentAsString(), InfoCet.class);
 
         InfoCetDto payload = InfoCetDto.builder().id(confirmado.getId())
                 .numeroCaso(confirmado.getNumeroCaso())
@@ -331,15 +327,17 @@ class InfoCetControllerTest {
                 .noEfectividad("Telefono apagado")
                 .build();
 
-        mvc.perform(MockMvcRequestBuilders
+        mockMvc.perform(MockMvcRequestBuilders
                 .put("/info-cets/" + payload.getId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(obm.writeValueAsString(payload)))
+                .content(objectMapper.writeValueAsString(payload)))
+                .andExpect(status().isOk())
                 .andReturn();
 
-        MvcResult getConfirmadoNoLocalizado = mvc.perform(MockMvcRequestBuilders.get("/info-cets/" + 3L)).andReturn();
+        MvcResult getConfirmadoNoLocalizado = mockMvc.perform(MockMvcRequestBuilders.get("/info-cets/" + 3L))
+                .andExpect(status().isOk()).andReturn();
 
-        InfoCet confirmadoNoLocalizado = obm.readValue(getConfirmadoNoLocalizado.getResponse().getContentAsString(), InfoCet.class);
+        InfoCet confirmadoNoLocalizado = objectMapper.readValue(getConfirmadoNoLocalizado.getResponse().getContentAsString(), InfoCet.class);
 
         assertEquals("Telefono apagado", confirmadoNoLocalizado.getNoEfectividad());
         assertEquals(1, confirmadoNoLocalizado.getFailedInfoCets().size());
@@ -347,14 +345,16 @@ class InfoCetControllerTest {
 
     @Test
     void updatedContactoWithConfirmadoShouldReturnConfirmadoWithContactos() throws Exception {
-        MvcResult getContacto = mvc.perform(MockMvcRequestBuilders
-                .get("/info-cets/" + 2L)).andReturn();
+        MvcResult getContacto = mockMvc.perform(MockMvcRequestBuilders
+                .get("/info-cets/" + 2L))
+                .andExpect(status().isOk()).andReturn();
 
-        MvcResult getConfirmado = mvc.perform(MockMvcRequestBuilders
-                .get("/info-cets/" + 1L)).andReturn();
+        MvcResult getConfirmado = mockMvc.perform(MockMvcRequestBuilders
+                .get("/info-cets/" + 1L))
+                .andExpect(status().isOk()).andReturn();
 
-        InfoCet contacto = obm.readValue(getContacto.getResponse().getContentAsString(), InfoCet.class);
-        InfoCet confirmado = obm.readValue(getConfirmado.getResponse().getContentAsString(), InfoCet.class);
+        InfoCet contacto = objectMapper.readValue(getContacto.getResponse().getContentAsString(), InfoCet.class);
+        InfoCet confirmado = objectMapper.readValue(getConfirmado.getResponse().getContentAsString(), InfoCet.class);
         assertEquals(2, contacto.getId());
 
         InfoCetDto payloadContacto = InfoCetDto.builder().id(contacto.getId())
@@ -425,21 +425,23 @@ class InfoCetControllerTest {
                 .localiza(true)
                 .build();
 
-        mvc.perform(MockMvcRequestBuilders
+        mockMvc.perform(MockMvcRequestBuilders
                 .put("/info-cets/" + payloadConfirmado.getId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(obm.writeValueAsString(payloadContacto))).andReturn();
+                .content(objectMapper.writeValueAsString(payloadContacto)))
+                .andExpect(status().isOk()).andReturn();
 
-        mvc.perform(MockMvcRequestBuilders
+        mockMvc.perform(MockMvcRequestBuilders
                 .put("/info-cets/" + payloadConfirmado.getId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(obm.writeValueAsString(payloadConfirmado))).andReturn();
+                .content(objectMapper.writeValueAsString(payloadConfirmado)))
+                .andExpect(status().isOk()).andReturn();
 
-        MvcResult result = mvc.perform(MockMvcRequestBuilders
-                .get("/info-cets/family-group/" + 1L)).andReturn();
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+                .get("/info-cets/family-group/" + 1L))
+                .andExpect(status().isOk()).andReturn();
 
-        assertEquals(200, result.getResponse().getStatus());
-        InfoCetResponseBody infoCet = obm.readValue(result.getResponse().getContentAsString(), InfoCetResponseBody.class);
+        InfoCetResponseBody infoCet = objectMapper.readValue(result.getResponse().getContentAsString(), InfoCetResponseBody.class);
 
         assertEquals(2, infoCet.getContatos().size());
     }
