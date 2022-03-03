@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest(classes = CetApplication.class)
 @AutoConfigureMockMvc
-class GenerateCetFileController {
+class GenerateCetFileTest {
 
     @Autowired
     private MockMvc mvc;

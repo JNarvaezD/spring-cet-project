@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,6 +15,7 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = CetApplication.class)
 @AutoConfigureMockMvc
@@ -35,8 +35,8 @@ class CetControllerTest {
                 content.getBytes()
         );
 
-        MvcResult result = mockMvc.perform(multipart("/cets/upload-file").file(file)).andReturn();
-        assertEquals(201, result.getResponse().getStatus());
+        mockMvc.perform(multipart("/cets/upload-file").file(file))
+                .andExpect(status().isCreated()).andReturn();
     }
 
     @Test
@@ -50,8 +50,8 @@ class CetControllerTest {
                 content.getBytes()
         );
 
-        MvcResult result = mockMvc.perform(multipart("/cets/upload-file").file(file)).andReturn();
-        assertEquals(422, result.getResponse().getStatus());
+        mockMvc.perform(multipart("/cets/upload-file").file(file))
+                .andExpect(status().is(422)).andReturn();
     }
 
     @Test
@@ -65,8 +65,8 @@ class CetControllerTest {
                 content.getBytes()
         );
 
-        MvcResult result = mockMvc.perform(multipart("/cets/upload-file").file(file)).andReturn();
-        assertEquals(204, result.getResponse().getStatus());
+        mockMvc.perform(multipart("/cets/upload-file").file(file))
+                .andExpect(status().is(204)).andReturn();
     }
 
     @Test

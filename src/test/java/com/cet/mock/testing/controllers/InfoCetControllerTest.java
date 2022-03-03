@@ -70,12 +70,11 @@ public class InfoCetControllerTest {
     @Test
     void shouldReturnAllInfoCetRows() throws Exception {
         when(infoCetService.findAll()).thenReturn(infoCetList);
-        MvcResult responseMVC = mockMvc.perform(get("/info-cets")
+        mockMvc.perform(get("/info-cets")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
         verify(infoCetService, times(1)).findAll();
-        assertEquals(responseMVC.getResponse().getStatus(), 200);
     }
 
     @Test
@@ -152,29 +151,26 @@ public class InfoCetControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         verify(infoCetService, times(1)).update(anyLong(), any());
-        assertEquals(responseMVC.getResponse().getStatus(), 200);
         assertEquals(responseMVC.getResponse().getContentAsString(), objectMapper.writeValueAsString(infoCetToReturn));
     }
 
     @Test
     void givenIdShouldDeleteThatId() throws Exception {
         when(infoCetService.delete(anyLong())).thenReturn(true);
-        MvcResult responseMVC = mockMvc.perform(delete("/info-cets/" + 1L)
+        mockMvc.perform(delete("/info-cets/" + 1L)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
         verify(infoCetService, times(1)).delete(anyLong());
-        assertEquals(200, responseMVC.getResponse().getStatus());
     }
 
     @Test
     void givenIdThatNotExistsShouldReturnFalse() throws Exception {
         when(infoCetService.delete(3L)).thenReturn(false);
-        MvcResult responseMVC = mockMvc.perform(delete("/info-cets/" + 3L)
+        mockMvc.perform(delete("/info-cets/" + 3L)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404))
                 .andReturn();
-        assertEquals(404, responseMVC.getResponse().getStatus());
     }
 
 }
