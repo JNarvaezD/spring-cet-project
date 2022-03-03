@@ -30,7 +30,7 @@ public class CetRepositoryI implements CetRepository{
     }
 
     @Override
-    public boolean findByNombreArchivo(String name) {
+    public boolean fileAlreadyUploaded(String name) {
         return cetCrudRepository.existsByNombreArchivo(name);
     }
 }

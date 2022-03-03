@@ -40,17 +40,12 @@ public class CetService {
 
     public Cet save(CetDto cetDto) {
         Cet cet = Cet.builder().nombreArchivo(cetDto.getNombreArchivo())
-                .fechaProceso(cetDto.getFechaProceso())
-                .build();
+                .fechaProceso(cetDto.getFechaProceso()).build();
         return cetRepository.save(cet);
     }
 
-    public boolean findByNombreArchivo(String name) {
-        return cetRepository.findByNombreArchivo(name);
-    }
-
     public String uploadData(MultipartFile file) throws Exception {
-        if(findByNombreArchivo(file.getOriginalFilename())) {
+        if(cetRepository.fileAlreadyUploaded(file.getOriginalFilename())) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "The file " + file.getOriginalFilename() + " has been already uploaded");
         }
 
@@ -71,9 +66,7 @@ public class CetService {
         }
 
         CetDto cetDto = CetDto.builder().nombreArchivo(file.getOriginalFilename())
-                .fechaProceso(LocalDate.now())
-                .build();
-
+                .fechaProceso(LocalDate.now()).build();
         Cet cet = save(cetDto);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
