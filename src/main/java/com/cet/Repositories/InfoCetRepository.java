@@ -16,5 +16,6 @@ public interface InfoCetRepository {
     Optional<InfoCet> findByIdentificacionAndCetId(String identificacion, Long cetId);
     void saveAll(List<InfoCet> infoCets);
     List<InfoCet> findContactos(String tipoId, String identificacion);
+    List<InfoCet> dataForReporte(Long cetId);
 
 }

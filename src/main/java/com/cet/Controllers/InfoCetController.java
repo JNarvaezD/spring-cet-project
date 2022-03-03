@@ -58,4 +58,9 @@ public class InfoCetController {
         return new ResponseEntity<>(confirmado, HttpStatus.OK);
     }
 
+    @GetMapping("/generate-cet-file/{cetId}")
+    public ResponseEntity<String> generateFileCet(@PathVariable("cetId") Long cetId) {
+        return new ResponseEntity<>(infoCetService.dataForReporte(cetId).toString(), HttpStatus.OK);
+    }
+
 }

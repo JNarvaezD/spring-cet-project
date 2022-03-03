@@ -16,7 +16,8 @@ public interface InfoCetCrudRepository extends JpaRepository<InfoCet, Long> {
             " ic.nombre1, ic.nombre2, ic.fallecido, ic.cod_eps, ic.producto_financiero, ic.entidad_financiera_id, ic.giro_a_familiar, " +
             " ic.telefono_fijo, ic.celular, ic.fecha_expedicion, ic.email, ic.direccion, ic.codigo_departamento, ic.codigo_municipio, " +
             " ic.id_bdua_af_confirmado, ic.tipoid_af_confirmado, ic.identificacion_af_confirmado, ic.cumple_aislamiento, " +
-            " ic.autoriza_eps, ic.covid_contacto, ic.parentesco_id, ic.comparten_gastos FROM info_cet ic WHERE ic.cet_id = ?1",
+            " ic.autoriza_eps, ic.covid_contacto, ic.parentesco_id, ic.comparten_gastos, ic.cet_id FROM info_cet AS ic WHERE ic.cet_id = ?1" +
+            " ORDER BY ic.autoriza_eps, ic.identificacion_af_confirmado",
             nativeQuery = true
     )
     List<InfoCet> returnDataForReporte(Long cetId);

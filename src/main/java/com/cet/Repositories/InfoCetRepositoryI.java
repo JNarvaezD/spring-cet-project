@@ -54,4 +54,9 @@ public class InfoCetRepositoryI implements InfoCetRepository{
         return infoCetCrudRepository.findAllByTipoidAfConfirmadoAndIdentificacionAfConfirmado(tipoId, identificacion);
     }
 
+    @Override
+    public List<InfoCet> dataForReporte(Long cetId) {
+        return infoCetCrudRepository.returnDataForReporte(cetId);
+    }
+
 }

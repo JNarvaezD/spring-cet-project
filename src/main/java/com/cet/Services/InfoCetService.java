@@ -205,4 +205,8 @@ public class InfoCetService {
         return false;
     }
 
+    public List<InfoCet> dataForReporte(Long cetId) {
+        return infoCetRepository.dataForReporte(cetId);
+    }
+
 }
