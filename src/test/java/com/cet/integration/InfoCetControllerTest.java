@@ -86,40 +86,8 @@ class InfoCetControllerTest {
                 .andExpect(status().isOk()).andReturn();
 
         InfoCet confirmado = objectMapper.readValue(getConfirmado.getResponse().getContentAsString(), InfoCet.class);
-        InfoCetDto payload = InfoCetDto.builder().id(confirmado.getId())
-                .numeroCaso(confirmado.getNumeroCaso())
-                .fechaDiagnostico(confirmado.getFechaDiagnostico())
-                .bduaAfiliadoId(confirmado.getBduaAfiliadoId())
-                .tipoId(confirmado.getTipoId())
-                .identificacion(confirmado.getIdentificacion())
-                .nombre1(confirmado.getNombre1())
-                .nombre2(confirmado.getNombre2())
-                .apellido1(confirmado.getApellido1())
-                .apellido2(confirmado.getApellido2())
-                .fechaNacimiento(confirmado.getFechaNacimiento())
-                .sexo(confirmado.getSexo())
-                .codEps(confirmado.getCodEps())
-                .telefonoFijo(confirmado.getTelefonoFijo())
-                .celular(confirmado.getCelular())
-                .covidContacto(confirmado.getCovidContacto())
-                .cet(confirmado.getCetId())
-                .productoFinanciero(false)
-                .entidadFinancieraId(null)
-                .giroAFamiliar(true)
-                .fallecido(false)
-                .fechaExpedicion(null)
-                .email("prueba@mail.com")
-                .direccion("Calle imaginaria #45-54")
-                .codigoDepartamento("01")
-                .codigoMunicipio("234")
-                .cumpleAislamiento(true)
-                .autorizaEps(false)
-                .parentescoId(8)
-                .compartenGastos(true)
-                .updatingInfoCet(false)
-                .fueConfirmado(false)
-                .localiza(true)
-                .build();
+        InfoCetDto payload = returnInfoCetDto(confirmado);
+        payload.setFechaExpedicion(null);
 
         MvcResult updating = mockMvc.perform(MockMvcRequestBuilders
                 .put("/info-cets/" + confirmado.getId())
@@ -146,39 +114,7 @@ class InfoCetControllerTest {
         InfoCet contacto = objectMapper.readValue(getContacto.getResponse().getContentAsString(), InfoCet.class);
         assertEquals(2, contacto.getId());
 
-        InfoCetDto payload = InfoCetDto.builder().id(contacto.getId())
-                .numeroCaso(contacto.getNumeroCaso())
-                .fechaDiagnostico(contacto.getFechaDiagnostico())
-                .bduaAfiliadoId(contacto.getBduaAfiliadoId())
-                .tipoId(contacto.getTipoId())
-                .identificacion(contacto.getIdentificacion())
-                .nombre1(contacto.getNombre1())
-                .nombre2(contacto.getNombre2())
-                .apellido1(contacto.getApellido1())
-                .apellido2(contacto.getApellido2())
-                .fechaNacimiento(contacto.getFechaNacimiento())
-                .sexo(contacto.getSexo())
-                .codEps(contacto.getCodEps())
-                .telefonoFijo(contacto.getTelefonoFijo())
-                .celular(contacto.getCelular())
-                .covidContacto(contacto.getCovidContacto())
-                .cet(contacto.getCetId())
-                .productoFinanciero(false)
-                .entidadFinancieraId(null)
-                .giroAFamiliar(true)
-                .fallecido(false)
-                .fechaExpedicion(LocalDate.of(2017, 8, 19))
-                .email("prueba@mail.com")
-                .direccion("Calle imaginaria #45-54")
-                .codigoDepartamento("01")
-                .codigoMunicipio("234")
-                .cumpleAislamiento(true)
-                .autorizaEps(true)
-                .parentescoId(2)
-                .compartenGastos(true)
-                .fueConfirmado(false)
-                .localiza(true)
-                .build();
+        InfoCetDto payload = returnInfoCetDto(contacto);
 
         //In this line, the payload of the contact is sent with the ID of the confirmed user so that the contact will be linked with the confirmed user
         MvcResult update = mockMvc.perform(MockMvcRequestBuilders
@@ -209,39 +145,7 @@ class InfoCetControllerTest {
         InfoCet contacto = objectMapper.readValue(getContacto.getResponse().getContentAsString(), InfoCet.class);
         assertEquals(2, contacto.getId());
 
-        InfoCetDto payload = InfoCetDto.builder().id(contacto.getId())
-                .numeroCaso(contacto.getNumeroCaso())
-                .fechaDiagnostico(contacto.getFechaDiagnostico())
-                .bduaAfiliadoId(contacto.getBduaAfiliadoId())
-                .tipoId(contacto.getTipoId())
-                .identificacion(contacto.getIdentificacion())
-                .nombre1(contacto.getNombre1())
-                .nombre2(contacto.getNombre2())
-                .apellido1(contacto.getApellido1())
-                .apellido2(contacto.getApellido2())
-                .fechaNacimiento(contacto.getFechaNacimiento())
-                .sexo(contacto.getSexo())
-                .codEps(contacto.getCodEps())
-                .telefonoFijo(contacto.getTelefonoFijo())
-                .celular(contacto.getCelular())
-                .covidContacto(contacto.getCovidContacto())
-                .cet(contacto.getCetId())
-                .productoFinanciero(false)
-                .entidadFinancieraId(null)
-                .giroAFamiliar(true)
-                .fallecido(false)
-                .fechaExpedicion(LocalDate.of(2017, 8, 19))
-                .email("prueba@mail.com")
-                .direccion("Calle imaginaria #45-54")
-                .codigoDepartamento("01")
-                .codigoMunicipio("234")
-                .cumpleAislamiento(true)
-                .autorizaEps(true)
-                .parentescoId(2)
-                .compartenGastos(true)
-                .fueConfirmado(false)
-                .localiza(true)
-                .build();
+        InfoCetDto payload = returnInfoCetDto(contacto);
 
         mockMvc.perform(MockMvcRequestBuilders
                 .put("/info-cets/" + 1L)
@@ -292,40 +196,9 @@ class InfoCetControllerTest {
 
         InfoCet confirmado = objectMapper.readValue(getConfirmado.getResponse().getContentAsString(), InfoCet.class);
 
-        InfoCetDto payload = InfoCetDto.builder().id(confirmado.getId())
-                .numeroCaso(confirmado.getNumeroCaso())
-                .fechaDiagnostico(confirmado.getFechaDiagnostico())
-                .bduaAfiliadoId(confirmado.getBduaAfiliadoId())
-                .tipoId(confirmado.getTipoId())
-                .identificacion(confirmado.getIdentificacion())
-                .nombre1(confirmado.getNombre1())
-                .nombre2(confirmado.getNombre2())
-                .apellido1(confirmado.getApellido1())
-                .apellido2(confirmado.getApellido2())
-                .fechaNacimiento(confirmado.getFechaNacimiento())
-                .sexo(confirmado.getSexo())
-                .codEps(confirmado.getCodEps())
-                .telefonoFijo(confirmado.getTelefonoFijo())
-                .celular(confirmado.getCelular())
-                .covidContacto(confirmado.getCovidContacto())
-                .cet(confirmado.getCetId())
-                .productoFinanciero(false)
-                .entidadFinancieraId(null)
-                .giroAFamiliar(true)
-                .fallecido(false)
-                .fechaExpedicion(LocalDate.of(2017, 8, 19))
-                .email("prueba@mail.com")
-                .direccion("Calle imaginaria #45-54")
-                .codigoDepartamento("01")
-                .codigoMunicipio("234")
-                .cumpleAislamiento(true)
-                .autorizaEps(true)
-                .parentescoId(2)
-                .compartenGastos(true)
-                .fueConfirmado(false)
-                .localiza(false)
-                .noEfectividad("Telefono apagado")
-                .build();
+        InfoCetDto payload = returnInfoCetDto(confirmado);
+        payload.setLocaliza(false);
+        payload.setNoEfectividad("Telefono apagado");
 
         mockMvc.perform(MockMvcRequestBuilders
                 .put("/info-cets/" + payload.getId())
@@ -357,73 +230,8 @@ class InfoCetControllerTest {
         InfoCet confirmado = objectMapper.readValue(getConfirmado.getResponse().getContentAsString(), InfoCet.class);
         assertEquals(2, contacto.getId());
 
-        InfoCetDto payloadContacto = InfoCetDto.builder().id(contacto.getId())
-                .numeroCaso(contacto.getNumeroCaso())
-                .fechaDiagnostico(contacto.getFechaDiagnostico())
-                .bduaAfiliadoId(contacto.getBduaAfiliadoId())
-                .tipoId(contacto.getTipoId())
-                .identificacion(contacto.getIdentificacion())
-                .nombre1(contacto.getNombre1())
-                .nombre2(contacto.getNombre2())
-                .apellido1(contacto.getApellido1())
-                .apellido2(contacto.getApellido2())
-                .fechaNacimiento(contacto.getFechaNacimiento())
-                .sexo(contacto.getSexo())
-                .codEps(contacto.getCodEps())
-                .telefonoFijo(contacto.getTelefonoFijo())
-                .celular(contacto.getCelular())
-                .covidContacto(contacto.getCovidContacto())
-                .cet(contacto.getCetId())
-                .productoFinanciero(false)
-                .entidadFinancieraId(null)
-                .giroAFamiliar(true)
-                .fallecido(false)
-                .fechaExpedicion(LocalDate.of(2017, 8, 19))
-                .email("prueba@mail.com")
-                .direccion("Calle imaginaria #45-54")
-                .codigoDepartamento("01")
-                .codigoMunicipio("234")
-                .cumpleAislamiento(true)
-                .autorizaEps(true)
-                .parentescoId(2)
-                .compartenGastos(true)
-                .fueConfirmado(false)
-                .localiza(true)
-                .build();
-
-        InfoCetDto payloadConfirmado = InfoCetDto.builder().id(confirmado.getId())
-                .numeroCaso(confirmado.getNumeroCaso())
-                .fechaDiagnostico(confirmado.getFechaDiagnostico())
-                .bduaAfiliadoId(confirmado.getBduaAfiliadoId())
-                .tipoId(confirmado.getTipoId())
-                .identificacion(confirmado.getIdentificacion())
-                .nombre1(confirmado.getNombre1())
-                .nombre2(confirmado.getNombre2())
-                .apellido1(confirmado.getApellido1())
-                .apellido2(confirmado.getApellido2())
-                .fechaNacimiento(confirmado.getFechaNacimiento())
-                .sexo(confirmado.getSexo())
-                .codEps(confirmado.getCodEps())
-                .telefonoFijo(confirmado.getTelefonoFijo())
-                .celular(confirmado.getCelular())
-                .covidContacto(confirmado.getCovidContacto())
-                .cet(confirmado.getCetId())
-                .productoFinanciero(false)
-                .entidadFinancieraId(null)
-                .giroAFamiliar(true)
-                .fallecido(false)
-                .fechaExpedicion(LocalDate.of(2017, 8, 19))
-                .email("prueba@mail.com")
-                .direccion("Calle imaginaria #45-54")
-                .codigoDepartamento("01")
-                .codigoMunicipio("234")
-                .cumpleAislamiento(true)
-                .autorizaEps(true)
-                .parentescoId(2)
-                .compartenGastos(true)
-                .fueConfirmado(false)
-                .localiza(true)
-                .build();
+        InfoCetDto payloadContacto = returnInfoCetDto(contacto);
+        InfoCetDto payloadConfirmado = returnInfoCetDto(confirmado);
 
         mockMvc.perform(MockMvcRequestBuilders
                 .put("/info-cets/" + payloadConfirmado.getId())
@@ -444,6 +252,42 @@ class InfoCetControllerTest {
         InfoCetResponseBody infoCet = objectMapper.readValue(result.getResponse().getContentAsString(), InfoCetResponseBody.class);
 
         assertEquals(2, infoCet.getContatos().size());
+    }
+
+    private InfoCetDto returnInfoCetDto(InfoCet payload) {
+        return InfoCetDto.builder().id(payload.getId())
+                .numeroCaso(payload.getNumeroCaso())
+                .fechaDiagnostico(payload.getFechaDiagnostico())
+                .bduaAfiliadoId(payload.getBduaAfiliadoId())
+                .tipoId(payload.getTipoId())
+                .identificacion(payload.getIdentificacion())
+                .nombre1(payload.getNombre1())
+                .nombre2(payload.getNombre2())
+                .apellido1(payload.getApellido1())
+                .apellido2(payload.getApellido2())
+                .fechaNacimiento(payload.getFechaNacimiento())
+                .sexo(payload.getSexo())
+                .codEps(payload.getCodEps())
+                .telefonoFijo(payload.getTelefonoFijo())
+                .celular(payload.getCelular())
+                .covidContacto(payload.getCovidContacto())
+                .cet(payload.getCetId())
+                .productoFinanciero(false)
+                .entidadFinancieraId(null)
+                .giroAFamiliar(true)
+                .fallecido(false)
+                .fechaExpedicion(LocalDate.of(2017, 8, 19))
+                .email("prueba@mail.com")
+                .direccion("Calle imaginaria #45-54")
+                .codigoDepartamento("01")
+                .codigoMunicipio("234")
+                .cumpleAislamiento(true)
+                .autorizaEps(true)
+                .parentescoId(2)
+                .compartenGastos(true)
+                .fueConfirmado(false)
+                .localiza(true)
+                .build();
     }
 
 }
