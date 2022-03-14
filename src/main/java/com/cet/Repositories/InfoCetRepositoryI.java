@@ -55,7 +55,7 @@ public class InfoCetRepositoryI implements InfoCetRepository{
     }
 
     @Override
-    public List<InfoCet> dataForReporte(Long cetId) {
+    public List<Object[]> dataForReporte(Long cetId) {
         return infoCetCrudRepository.returnDataForReporte(cetId);
     }
 

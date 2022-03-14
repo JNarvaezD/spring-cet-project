@@ -16,6 +16,6 @@ public interface InfoCetRepository {
     Optional<InfoCet> findByIdentificacionAndCetId(String identificacion, Long cetId);
     void saveAll(List<InfoCet> infoCets);
     List<InfoCet> findFamilyGroup(String tipoId, String identificacion);
-    List<InfoCet> dataForReporte(Long cetId);
+    List<Object[]> dataForReporte(Long cetId);
 
 }

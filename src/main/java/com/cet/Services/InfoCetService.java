@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -163,7 +164,41 @@ public class InfoCetService {
     }
 
     public List<InfoCet> dataForReporte(Long cetId) {
-        return infoCetRepository.dataForReporte(cetId);
+        List<InfoCet> data = new ArrayList<>();
+        infoCetRepository.dataForReporte(cetId).forEach(ax -> {
+            data.add(InfoCet.builder().numeroCaso((String) ax[0])
+                    .fechaDiagnostico((LocalDate) ax[1])
+                    .bduaAfiliadoId((String) ax[2])
+                    .tipoId((String) ax[3])
+                    .identificacion((String) ax[4])
+                    .apellido1((String) ax[5])
+                    .apellido2((String) ax[6])
+                    .nombre1((String) ax[7])
+                    .nombre2((String) ax[8])
+                    .fallecido((Boolean) ax[9])
+                    .codEps((String) ax[10])
+                    .productoFinanciero((Boolean) ax[11])
+                    .entidadFinancieraId((Integer) ax[12])
+                    .giroAFamiliar((Boolean) ax[13])
+                    .telefonoFijo((String) ax[14])
+                    .celular((String) ax[15])
+                    .fechaExpedicion((LocalDate) ax[16])
+                    .email((String) ax[17])
+                    .direccion((String) ax[18])
+                    .codigoDepartamento((String) ax[19])
+                    .codigoMunicipio((String) ax[20])
+                    .idBduaAfConfirmado((String) ax[21])
+                    .tipoidAfConfirmado((String) ax[22])
+                    .identificacionAfConfirmado((String) ax[23])
+                    .cumpleAislamiento((Boolean) ax[24])
+                    .autorizaEps((Boolean) ax[25])
+                    .covidContacto((Integer) ax[26])
+                    .parentescoId((Integer) ax[27])
+                    .compartenGastos((Boolean) ax[28])
+                    .cetId((Long) ax[29])
+                    .build());
+        });
+        return data;
     }
 
 }

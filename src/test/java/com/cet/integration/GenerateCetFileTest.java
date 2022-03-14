@@ -45,7 +45,7 @@ class GenerateCetFileTest {
                 content.getBytes()
         );
 
-        MvcResult result = mvc.perform(multipart("/cets/upload-data").file(file)).andReturn();
+        MvcResult result = mvc.perform(multipart("/cets/upload-file").file(file)).andReturn();
         assertEquals(201, result.getResponse().getStatus());
     }
 
@@ -88,7 +88,7 @@ class GenerateCetFileTest {
         mvc.perform(MockMvcRequestBuilders.put("/info-cets/" + payloadConfirmado.getId())
                 .contentType(MediaType.APPLICATION_JSON).content(obm.writeValueAsString(payloadConfirmado))).andReturn();
 
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/info-cets/show/" + 1L)).andReturn();
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/info-cets/family-group/" + 1L)).andReturn();
 
         assertEquals(200, result.getResponse().getStatus());
         InfoCetResponseBody infoCet = obm.readValue(result.getResponse().getContentAsString(), InfoCetResponseBody.class);
@@ -119,6 +119,7 @@ class GenerateCetFileTest {
 
         MvcResult getDataForReporte = mvc.perform(MockMvcRequestBuilders
                 .get("/info-cets/generate-cet-file/" + 1L)).andReturn();
+
     }
 
 }

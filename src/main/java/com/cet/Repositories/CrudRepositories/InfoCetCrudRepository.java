@@ -20,5 +20,5 @@ public interface InfoCetCrudRepository extends JpaRepository<InfoCet, Long> {
             " ORDER BY ic.autoriza_eps, ic.identificacion_af_confirmado",
             nativeQuery = true
     )
-    List<InfoCet> returnDataForReporte(Long cetId);
+    List<Object[]> returnDataForReporte(Long cetId);
 }
